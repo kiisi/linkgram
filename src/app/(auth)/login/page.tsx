@@ -24,7 +24,7 @@ export default function Page() {
             // Redirect after a short delay to show the success message
             setTimeout(() => {
                 router.push("/"); // Change to the desired page
-            }, 2000); // 2 seconds delay before redirecting
+            }, 2000);
         }
     }, [state?.success, router]);
 
