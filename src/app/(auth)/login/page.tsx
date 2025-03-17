@@ -55,6 +55,7 @@ export default function Page() {
                                 type="email"
                                 placeholder="alex@email.com"
                                 defaultValue={state?.inputs?.email ?? ''}
+                                isError={Boolean(state?.errors?.email)}
                             />
                             {state?.errors?.email && (
                                     <p id="email-error" className="text-[13.5px] text-red-500 pt-[4px]">
@@ -67,8 +68,9 @@ export default function Page() {
                             <Input
                                 type="password"
                                 name="password"
-                                placeholder="•••••••••••••••••••••••••"
+                                placeholder="••••••••••••••••••"
                                 defaultValue={state?.inputs?.password ?? ''}
+                                isError={Boolean(state?.errors?.password)}
                             />
                             {state?.errors?.password && (
                                 <p id="password-error" className="text-[13.5px] text-red-500 pt-[4px]">
