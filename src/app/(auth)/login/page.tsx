@@ -108,7 +108,7 @@ export default function Page() {
                         >
                             Login
                         </Button>
-                        <div className="text-center">Don&apos;t have an account? <span className="text-primary hover:underline"><Link href="/register">Create account</Link></span></div>
+                        <div className="text-center text-[14.5px]">Don&apos;t have an account? <span className="text-primary hover:underline"><Link href="/register">Create account</Link></span></div>
                     </form>
                 </div>
             </div>
