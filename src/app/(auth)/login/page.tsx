@@ -23,7 +23,7 @@ export default function Page() {
         if (state?.success) {
             // Redirect after a short delay to show the success message
             setTimeout(() => {
-                router.push("/"); // Change to the desired page
+                router.push("/messages"); // Change to the desired page
             }, 2000);
         }
     }, [state?.success, router]);
