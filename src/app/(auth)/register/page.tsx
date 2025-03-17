@@ -120,7 +120,7 @@ export default function Page() {
                                 type="password"
                                 name="confirmPassword"
                                 id="confirmPassword"
-                                placeholder="•••••••••••••••••••••••••"
+                                placeholder="••••••••••••••••••"
                                 defaultValue={state?.inputs?.confirmPassword ?? ''}
                                 isError={Boolean(state?.errors?.confirmPassword)}
                             />
