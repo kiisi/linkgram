@@ -30,7 +30,7 @@ export default function Page() {
 
     return (
         <main className="min-h-screen bg-white md:bg-whitesmoke grid place-items-center py-10">
-            <div className="w-full max-w-[525px]">
+            <div className="w-full max-w-[560px]">
                 <header className="grid pl-[32px] md:pl-0 md:place-items-center mb-[50px]">
                     <figure className="flex items-center gap-2">
                         <Image
@@ -117,6 +117,7 @@ export default function Page() {
                                 name="confirmPassword"
                                 id="confirmPassword"
                                 placeholder="•••••••••••••••••••••••••"
+                                defaultValue={state?.inputs?.confirmPassword ?? ''}
                             />
                             {state?.errors?.confirmPassword && (
                                 <p id="confirmPassword-error" className="text-[13.5px] text-red-500 pt-[4px]">
@@ -156,7 +157,7 @@ export default function Page() {
                         >
                             Create new account
                         </Button>
-                        <div className="text-center">Already an account? <br className="md:hidden" /> <span className="text-primary hover:underline"><Link href="/login">Login</Link></span></div>
+                        <div className="text-center text-[14.5px]">Already have an account?  <span className="text-primary hover:underline"><Link href="/login">Login</Link></span></div>
                     </form>
                 </div>
             </div>

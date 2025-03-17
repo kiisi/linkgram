@@ -1,13 +1,36 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
+import { ActionResponse, loginAccount } from "../action";
+import { CheckCircle2, CircleAlert } from "lucide-react";
+
+const initialState: ActionResponse = {
+    success: null,
+    message: '',
+}
 
 export default function Page() {
 
+    const router = useRouter();
+
+    const [state, formAction, isPending] = useActionState(loginAccount, initialState)
+
+    useEffect(() => {
+        if (state?.success) {
+            // Redirect after a short delay to show the success message
+            setTimeout(() => {
+                router.push("/"); // Change to the desired page
+            }, 2000); // 2 seconds delay before redirecting
+        }
+    }, [state?.success, router]);
+
     return (
         <main className="min-h-screen bg-whitesmoke grid place-items-center py-10">
-            <div className="w-full max-w-[476px]">
+            <div className="w-full max-w-[560px]">
                 <header className="grid place-items-center mb-[50px]">
                     <figure className="flex items-center gap-2">
                         <Image
@@ -24,30 +47,68 @@ export default function Page() {
                         <h1 className="font-bold text-[24px] md:text-[32px] mb-[8px]">Login</h1>
                         <p className="text-gray-alt">Add your details below to get back into the app</p>
                     </div>
-                    <form className="flex flex-col gap-[24px]">
+                    <form action={formAction} className="flex flex-col gap-[24px]">
                         <fieldset>
                             <label className="text-[12px] text-gray mb-[4px] inline-block leading-[18px]">Email Address</label>
                             <Input
-                                // leading={<EnvelopIcon />}
                                 name="email"
                                 type="email"
-                                placeholder="e.g. alex@email.com"
+                                placeholder="alex@email.com"
+                                defaultValue={state?.inputs?.email ?? ''}
                             />
+                            {state?.errors?.email && (
+                                    <p id="email-error" className="text-[13.5px] text-red-500 pt-[4px]">
+                                        {state.errors.email[0]}
+                                    </p>
+                                )}
                         </fieldset>
                         <fieldset>
                             <label className="text-[12px] text-gray mb-[4px] inline-block leading-[18px]">Password</label>
                             <Input
-                                // leading={<PasswordIcon />}
                                 type="password"
                                 name="password"
-                                placeholder="Enter your password"
+                                placeholder="•••••••••••••••••••••••••"
+                                defaultValue={state?.inputs?.password ?? ''}
                             />
+                            {state?.errors?.password && (
+                                <p id="password-error" className="text-[13.5px] text-red-500 pt-[4px]">
+                                    {state.errors.password[0]}
+                                </p>
+                            )}
                         </fieldset>
+                        {
+                            state?.success === false && (
+                                <div className="flex gap-2 min-h-[60px] w-full rounded-[8px] border-red border-1 p-2">
+                                    <div className="pt-[2px]">
+                                        <CircleAlert className="h-5 w-5 text-red" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-red font-medium text-[14.5px]">Error!</h2>
+                                        <p className="text-red text-[13.5px]">{state.message}</p>
+                                    </div>
+                                </div>
+                            )
+                        }
+                        {
+                            state?.success && (
+                                <div className="flex gap-2 min-h-[60px] w-full rounded-[8px] border-green-500 border-1 p-2">
+                                    <div className="pt-[2px]">
+                                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-green-500 font-medium text-[14.5px]">Success!</h2>
+                                        <p className="text-green-500 text-[13.5px]">{state.message}</p>
+                                    </div>
+                                </div>
+                            )
+                        }
                         <Button
+                            isLoading={isPending}
+                            type="submit"
                         >
                             Login
                         </Button>
-                        <div className="text-center">Don&apos;t have an account? <br className="md:hidden" /><span className="text-primary hover:underline"><Link href="/register">Create account</Link></span></div>
+                        <div className="text-center">Don&apos;t have an account? <span className="text-primary hover:underline"><Link href="/register">Create account</Link></span></div>
                     </form>
                 </div>
             </div>
