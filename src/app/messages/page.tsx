@@ -1,9 +1,10 @@
-import { Phone, Video } from "lucide-react";
+import { SendIcon } from "@/components/common/svgs";
+import { Link, Phone, Video } from "lucide-react";
 
 export default function Page() {
 
     return (
-        <div className="h-full w-full bg-white rounded-[8px]">
+        <div className="h-full w-full bg-white rounded-[8px] flex flex-col">
             <div className="shadow-sm px-[16px]">
                 <header className="h-[56px] flex items-center justify-between">
                     <div className="flex items-center gap-[5px]">
@@ -29,6 +30,21 @@ export default function Page() {
                         </button>
                     </div>
                 </header>
+            </div>
+            <div className="flex-1 h-full w-full bg-green-500">
+                op
+                
+            </div>
+            <div className="p-[8px] flex items-center gap-[4px]">
+                <button type="submit" className="cursor-pointer shrink-0 self-end w-[36px] h-[36px] rounded-full grid place-items-center transition group hover:bg-[#F2F2F2]">
+                    <Link className="text-primary h-[20px] w-[20px]" />
+                </button>
+                <div className="h-[36px] flex items-center gap-2 rounded-[16px] w-full bg-[#F6F6F7] px-[12px]">
+                    <input className="w-full outline-none" placeholder="Message" />
+                </div>
+                <button type="submit" className="cursor-pointer shrink-0 self-end w-[36px] h-[36px] rounded-full grid place-items-center transition group hover:bg-[#F2F2F2]">
+                    <SendIcon className="ml-[2px]" />
+                </button>
             </div>
         </div>
     )
