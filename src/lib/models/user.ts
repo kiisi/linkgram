@@ -12,7 +12,7 @@ const userSchema = new Schema<IUser>({
   lastName: { type: String, required: true, },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-});
+}, { timestamps: true });
 
 const UserModel: Model<IUser> = mongoose.models.user || mongoose.model<IUser>("user", userSchema);
 

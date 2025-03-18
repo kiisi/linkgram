@@ -1,21 +1,49 @@
 @import "tailwindcss";
+@pluggin "tailwindcss-animate";
 
 @theme {
-  --color-primary: #633CFF;
-  --color-primary-alt: #806AFF;
+  --color-primary: #633cff;
+  --color-primary-alt: #806aff;
   --color-primary-light: #beadff;
   --color-red: #ff3939;
   --color-whitesmoke: #fafafa;
   --color-gray: #333333;
   --color-gray-alt: #737373;
   --color-gray-light: #d9d9d9;
+
+  --color-black-grey: #000000b3;
+
+  --color-muted-foreground: hsl(215.4, 16.3%, 46.9%);
+  --color-background: hsl(0, 0%, 98%);
+
+  --animate-overlay-show: overlayShow 250ms ease-in;
+  --animate-content-show: contentShow 250ms ease-out;
+
+  @keyframes overlayShow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes contentShow {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
 }
 
 /* :root {
   --background: #ffffff;
   --foreground: #171717;
 } */
-
 
 /* @media (prefers-color-scheme: dark) {
   :root {
@@ -31,11 +59,19 @@ body {
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
-      display: none;
+    display: none;
   }
- /* Hide scrollbar for IE, Edge and Firefox */
+  /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
 }
+
+.overlayShow {
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contentShow {
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
