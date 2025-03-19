@@ -22,8 +22,6 @@ export async function GET(request: NextRequest) {
 
     try {
         const token = request.cookies.get('token')
-        console.log("Token ==>", token)
-        console.log("Token Value ==>", token?.value)
 
         const payload = await jsonwebtoken.verify(token?.value ?? '', process.env.SECRET_KEY!) as { _id: string; iat: number; exp: number };
 

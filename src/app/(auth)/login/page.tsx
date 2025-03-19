@@ -22,9 +22,7 @@ export default function Page() {
     useEffect(() => {
         if (state?.success) {
             // Redirect after a short delay to show the success message
-            setTimeout(() => {
-                router.push("/messages"); // Change to the desired page
-            }, 2000);
+            router.push("/messages"); // Change to the desired page
         }
     }, [state?.success, router]);
 
@@ -58,10 +56,10 @@ export default function Page() {
                                 isError={Boolean(state?.errors?.email)}
                             />
                             {state?.errors?.email && (
-                                    <p id="email-error" className="text-[13.5px] text-red-500 pt-[4px]">
-                                        {state.errors.email[0]}
-                                    </p>
-                                )}
+                                <p id="email-error" className="text-[13.5px] text-red-500 pt-[4px]">
+                                    {state.errors.email[0]}
+                                </p>
+                            )}
                         </fieldset>
                         <fieldset>
                             <label className="text-[12px] text-gray mb-[4px] inline-block leading-[18px]">Password</label>
