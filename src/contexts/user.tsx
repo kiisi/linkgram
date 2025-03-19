@@ -1,10 +1,6 @@
 "use client"
 import { IUser } from '@/lib/models/user';
-import Image from 'next/image';
-import { redirect } from 'next/navigation';
-import React, { createContext, useReducer, useEffect, ReactNode, useContext, useState } from 'react';
-import axios from "axios";
-
+import React, { createContext, useReducer, ReactNode, useContext, useState } from 'react';
 
 export interface UserContextType {
     user: IUser | null;
@@ -42,6 +38,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [authStatusType, setAuthStatusType] = useState<AuthStatusType>("PENDING");
     const [user, dispatch] = useReducer(userReducer, initialState);
 
+    console.log(authStatusType, setAuthStatusType)
     // useEffect(() => {
     //     const fetchUser = async () => {
     //         try {
