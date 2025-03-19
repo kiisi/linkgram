@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
 
         if (!token) return redirectToLogin(request);
 
-        const apiResponse = await fetch(new URL('http://localhost:3000/api/users/me'), {
+        const apiResponse = await fetch(new URL(`${process.env.NEXT_PUBLIC_API_BASE}/api/users/me`), {
             method: "GET",
             credentials: "include",
             headers: {
