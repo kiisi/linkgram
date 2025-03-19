@@ -146,7 +146,7 @@ export async function loginAccount(prevState: ActionResponse | null, formData: F
             }
         }
 
-        const isPasswordValid = await bcrypt.compare(rawFormData.password!, isExistingUser.password);
+        const isPasswordValid = await bcrypt.compare(rawFormData.password!, isExistingUser.password!);
 
         if (!isPasswordValid) {
             return {
@@ -156,7 +156,7 @@ export async function loginAccount(prevState: ActionResponse | null, formData: F
             }
         }
 
-        const token = jwt.sign({ userId: isExistingUser._id }, process.env.SECRET_KEY!, { expiresIn: "7d" });
+        const token = jwt.sign({ _id: isExistingUser._id }, process.env.SECRET_KEY!, { expiresIn: "7d" });
 
         const cookieStore = await cookies();
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/lib/react-query";
+import { UserProvider } from "@/contexts/user";
 
 const instrumentSans = Instrument_Sans({
   weight: ["400", "500", "600", "700"],
@@ -24,7 +25,9 @@ export default function RootLayout({
         className={`${instrumentSans.className} antialiased`}
       >
         <ReactQueryProvider>
-          {children}
+          <UserProvider>
+            {children}
+          </UserProvider>
         </ReactQueryProvider>
       </body>
     </html>
