@@ -3,6 +3,7 @@ import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/lib/react-query";
 import { UserProvider } from "@/contexts/user";
+import { Toaster } from "react-hot-toast";
 
 const instrumentSans = Instrument_Sans({
   weight: ["400", "500", "600", "700"],
@@ -27,6 +28,13 @@ export default function RootLayout({
         <ReactQueryProvider>
           <UserProvider>
             {children}
+            <Toaster
+              position="top-center"
+              reverseOrder={false}
+              toastOptions={{
+                duration: 12500,
+              }}
+            />
           </UserProvider>
         </ReactQueryProvider>
       </body>

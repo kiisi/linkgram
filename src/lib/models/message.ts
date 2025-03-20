@@ -1,9 +1,10 @@
 import mongoose, { Schema, Document, Types, Model } from "mongoose";
+import { IUser } from "./user";
 
 // Define message sub-document interface
-interface IMessage {
-    to: Types.ObjectId;
-    from: Types.ObjectId;
+export interface IMessage {
+    to: Types.ObjectId | IUser[];
+    from: Types.ObjectId | IUser[];
     text?: string;
     mediaUrl?: string;
     file?: string;
@@ -16,7 +17,7 @@ interface IMessage {
 
 // Define One-to-One Message interface
 export interface IOneToOneMessage extends Document {
-    participants: Types.ObjectId[];
+    participants: Types.ObjectId[] | IUser[];
     messages: IMessage[];
 }
 
@@ -50,8 +51,6 @@ const messageSchema = new Schema<IOneToOneMessage>(
 );
 
 // Define the model
-const MessageModel: Model<IOneToOneMessage> =
-    mongoose.models.Message ||
-    mongoose.model<IMessage>("message", messageSchema);
+const MessageModel: Model<IOneToOneMessage> = mongoose.models.Message || mongoose.model<IOneToOneMessage>("Message", messageSchema);
 
 export default MessageModel;

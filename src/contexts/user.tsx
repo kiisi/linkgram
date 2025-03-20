@@ -1,6 +1,8 @@
 "use client"
 import { IUser } from '@/lib/models/user';
-import React, { createContext, useReducer, ReactNode, useContext, useState } from 'react';
+import React, { createContext, useReducer, ReactNode, useContext, useEffect, useState } from 'react';
+import Image from 'next/image';
+import { getToken } from '@/lib';
 
 export interface UserContextType {
     user: IUser | null;
@@ -30,36 +32,43 @@ const userReducer = (state: IUser | null, action: Action): IUser | null => {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-type AuthStatusType = "PENDING" | "AUTHENTICATED" | "UNAUTHENTICATED"
+// type AuthStatusType = "PENDING" | "AUTHENTICATED" | "UNAUTHENTICATED"
 
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
     // Initialize useReducer with the reducer function and initial state
-    const [authStatusType, setAuthStatusType] = useState<AuthStatusType>("PENDING");
+    const [isLoading, setIsLoading] = useState(true);
     const [user, dispatch] = useReducer(userReducer, initialState);
 
-    console.log(authStatusType, setAuthStatusType)
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             const response = await axios.get("/api/users/me", {
-    //                 withCredentials: true, // Ensures cookies are sent
-    //             });
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const token = await getToken();
 
-    //             console.log(response)
+                const apiResponse = await fetch(new URL(`${process.env.NEXT_PUBLIC_API_BASE}/api/users/me`), {
+                    method: "GET",
+                    credentials: "include",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Cookie': `token=${token}`,
+                    },
+                });
 
-    //             // dispatch({ type: 'SET_USER', payload: _data as IUser });
-    //             setAuthStatusType("AUTHENTICATED")
-    //         }
-    //         catch (error) {
-    //             console.log("Error", error);
-    //             setAuthStatusType("UNAUTHENTICATED");
-    //             redirect('/login')
-    //         }
-    //     };
+                const data = await apiResponse.json();
 
-    //     fetchUser();
-    // }, []);
+                dispatch({ type: 'SET_USER', payload: data.data as IUser });
+            }
+            catch (error) {
+                console.log("ERROR::", error);
+                dispatch({ type: 'SET_USER', payload: {} as IUser });
+            }
+            finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchUser();
+    }, [isLoading]);
 
     // Define the setUser function to dispatch actions
     const setUser = (user: IUser | null) => {
@@ -87,6 +96,19 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     //     default:
     //         break;
     // }
+
+    if (isLoading) {
+        return (
+            <div className='grid place-items-center w-screen h-screen'>
+                <Image
+                    src="/logo.svg"
+                    alt="Linkgram logo"
+                    width={40}
+                    height={40}
+                />
+            </div>
+        )
+    }
 
     return (
         <UserContext.Provider value={{ user, setUser }}>
