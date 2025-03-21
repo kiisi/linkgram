@@ -75,3 +75,39 @@ body {
 .contentShow {
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.chat-box-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-box-scroll-container::-webkit-scrollbar-button:end:increment {
+  display: block;
+  height: 2px;
+}
+
+.chat-box-scroll-container::-webkit-scrollbar-button:start:decrement {
+  display: block;
+  height: 2px;
+}
+
+.chat-box-scroll-container::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+
+.chat-box-scroll-container::-webkit-scrollbar-thumb:vertical {
+  background-color: #0000001a;
+}
+
+.chat-box-scroll-container::-webkit-scrollbar-thumb:vertical:hover {
+  background-color: #5a5a5a4d;
+}
+
+.chat-bubble{
+  transition: bottom 150ms ease-out, height 300ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* .chat-box-layout{
+  background: lightblue url(/images/chat-bg-pattern-light.png) no-repeat fixed center;
+  background-size: cover;
+} */
+/* url(/images/chat-bg.png), */

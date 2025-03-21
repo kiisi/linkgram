@@ -132,7 +132,7 @@ export default function ChatsSideNavigation() {
                         {
                             chatMessages?.map((data, index) => {
 
-                                let participant = data.participants.find(data => data._id !== user?._id);
+                                let participant = data.participants.find(data => typeof data !== "string" && data._id !== user?._id);
                                 if (!participant) {
                                     participant = data.participants[0]
                                 }

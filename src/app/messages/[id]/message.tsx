@@ -1,14 +1,37 @@
 "use client"
-import { SendIcon } from "@/components/common/svgs"
-import { LinkIcon, Phone, Video } from "lucide-react"
+import { MessageType } from "@/@types"
+import { useChatsContext } from "@/contexts/chats"
+import { useUserContext } from "@/contexts/user"
+import { Phone, Video } from "lucide-react"
 import { useState } from "react"
+import ChatBox from "./chatbox"
 
-export default function Message() {
+export default function Message({ id }: { id: string }) {
 
-    const [messages, setMessages] = useState([])
+    const { user } = useUserContext()
+
+    const { chats } = useChatsContext()
+
+    const chat = chats.find(data => data._id === id);
+
+    const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
+
+    async function sendMessage(data: MessageType) {
+        const sentMessage = await deliverMessage(data);
+
+        console.log(sentMessage)
+
+        setChatMessages((prevMessages) =>
+            prevMessages.map((msg) =>
+                msg._id === sentMessage._id ? sentMessage : msg
+            )
+        );
+    }
+
+    console.log(chatMessages)
 
     return (
-        <div className="h-full w-full bg-white rounded-[8px] flex flex-col">
+        <div className="h-full w-full bg-white rounded-[8px] flex flex-col chat-box-layout ">
             <div className="shadow-sm px-[8px]">
                 <header className="h-[56px] flex items-center justify-between">
                     <div className="flex items-center gap-[5px]">
@@ -35,22 +58,20 @@ export default function Message() {
                     </div>
                 </header>
             </div>
-            <div className="overflow-y-auto flex-1 h-full w-full bg-green-500">
-                <div className="">
-
-                </div>
-            </div>
-            <div className="p-[8px] flex items-center gap-[4px]">
-                <button type="submit" className="cursor-pointer shrink-0 self-end w-[36px] h-[36px] rounded-full grid place-items-center transition group hover:bg-[#F2F2F2]">
-                    <LinkIcon className="text-primary h-[20px] w-[20px]" />
-                </button>
-                <div className="h-[36px] flex items-center gap-2 rounded-[16px] w-full bg-[#F6F6F7] px-[12px]">
-                    <input className="w-full outline-none" placeholder="Message" />
-                </div>
-                <button type="submit" className="cursor-pointer shrink-0 self-end w-[36px] h-[36px] rounded-full grid place-items-center transition group hover:bg-[#F2F2F2]">
-                    <SendIcon className="ml-[2px]" />
-                </button>
-            </div>
+            <ChatBox
+                sendMessage={sendMessage}
+                chatMessages={chatMessages}
+                setChatMessages={setChatMessages}
+                userId={user?._id ?? ''}
+                recipientId={id}
+            />
         </div>
     )
+}
+
+async function deliverMessage(message: MessageType) {
+    const data = JSON.parse(JSON.stringify(message)) as MessageType;
+    data.status = "sent";
+    await new Promise((res) => setTimeout(res, 1000));
+    return data;
 }

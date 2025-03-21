@@ -1,24 +1,24 @@
 "use client"
-import { IUser } from '@/lib/models/user';
 import React, { createContext, useReducer, ReactNode, useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getToken } from '@/lib';
+import { UserType } from '@/@types';
 
 export interface UserContextType {
-    user: IUser | null;
-    setUser: (user: IUser | null) => void;
+    user: UserType | null;
+    setUser: (user: UserType | null) => void;
 }
 
 // Define action types
 type Action =
-    | { type: 'SET_USER'; payload: IUser | null }
+    | { type: 'SET_USER'; payload: UserType | null }
     | { type: 'CLEAR_USER' }
 
 // Define initial state
-const initialState: IUser | null = null;
+const initialState: UserType | null = null;
 
 // Define the reducer function
-const userReducer = (state: IUser | null, action: Action): IUser | null => {
+const userReducer = (state: UserType | null, action: Action): UserType | null => {
     switch (action.type) {
         case 'SET_USER':
             return action.payload;
@@ -56,11 +56,11 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
                 const data = await apiResponse.json();
 
-                dispatch({ type: 'SET_USER', payload: data.data as IUser });
+                dispatch({ type: 'SET_USER', payload: data.data as UserType });
             }
             catch (error) {
                 console.log("ERROR::", error);
-                dispatch({ type: 'SET_USER', payload: {} as IUser });
+                dispatch({ type: 'SET_USER', payload: {} as UserType });
             }
             finally {
                 setIsLoading(false);
@@ -71,7 +71,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }, [isLoading]);
 
     // Define the setUser function to dispatch actions
-    const setUser = (user: IUser | null) => {
+    const setUser = (user: UserType | null) => {
         dispatch({ type: 'SET_USER', payload: user });
     };
 

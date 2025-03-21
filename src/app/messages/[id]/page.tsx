@@ -13,7 +13,7 @@ export default async function Page({
         <>
             {
                 id ? (
-                    <Message />
+                    <Message id={id} />
                 ) : (
                     <div className="h-full w-full bg-white rounded-[8px] grid place-items-center">
                         <figure>
