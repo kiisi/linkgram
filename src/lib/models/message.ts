@@ -3,6 +3,7 @@ import { IUser } from "./user";
 
 // Define message sub-document interface
 export interface IMessage {
+    _id: Types.ObjectId;
     to: Types.ObjectId | IUser[];
     from: Types.ObjectId | IUser[];
     text?: string;

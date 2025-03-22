@@ -19,7 +19,9 @@ export interface OneToOneMessageType {
 }
 
 export interface MessageType {
-    _id: string;
+    _id?: string;
+    tempId?: string;
+    chatId?: string;
     to: string | UserType[];
     from: string | UserType[];
     text?: string;

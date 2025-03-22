@@ -102,7 +102,7 @@ body {
   background-color: #5a5a5a4d;
 }
 
-.chat-bubble{
+.chat-box-scroll-container {
   transition: bottom 150ms ease-out, height 300ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 

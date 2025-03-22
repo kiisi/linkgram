@@ -1,10 +1,16 @@
 "use client"
-import { MessageType } from "@/@types"
+import { MessageType, UserType } from "@/@types"
 import { useChatsContext } from "@/contexts/chats"
 import { useUserContext } from "@/contexts/user"
 import { Phone, Video } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import ChatBox from "./chatbox"
+import Pusher from 'pusher-js';
+
+const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
+    cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER!,
+});
+
 
 export default function Message({ id }: { id: string }) {
 
@@ -14,21 +20,36 @@ export default function Message({ id }: { id: string }) {
 
     const chat = chats.find(data => data._id === id);
 
-    const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
+    const participant = (chat?.participants.find(data => typeof data !== "string" && data._id !== user?._id)) || chat?.participants[0];
+
+    const [chatMessages, setChatMessages] = useState<MessageType[]>(chat?.messages ?? []);
 
     async function sendMessage(data: MessageType) {
-        const sentMessage = await deliverMessage(data);
-
-        console.log(sentMessage)
-
-        setChatMessages((prevMessages) =>
-            prevMessages.map((msg) =>
-                msg._id === sentMessage._id ? sentMessage : msg
-            )
-        );
+        const payload: MessageType = {
+            ...data,
+            chatId: chat?._id, 
+        }
+        
+        await deliverMessage(payload);
     }
 
-    console.log(chatMessages)
+    useEffect(() => {
+
+        const channel = pusher.subscribe("chat-room");
+
+        channel.bind("new-message-event", (data: MessageType) => {
+            setChatMessages((prevMessages) =>
+                prevMessages.map((msg) =>
+                    msg._id === data._id ? data : msg
+                )
+            );
+        });
+
+        return () => {
+            channel.unbind_all();
+            channel.unsubscribe();
+        };
+    }, []);
 
     return (
         <div className="h-full w-full bg-white rounded-[8px] flex flex-col chat-box-layout ">
@@ -42,7 +63,9 @@ export default function Message({ id }: { id: string }) {
                             <div className="text-center text-[14.5px] tracking-[1px] leading-[40px] h-[40px] w-[40px] rounded-full bg-primary-alt text-white">
                                 DF
                             </div>
-                            <p className="font-medium text-[14.5px] mt-[1px] text-[#121414]">Destiny Felix</p>
+                            <p className="font-medium text-[14.5px] mt-[1px] text-[#121414]">
+                                {(participant as UserType)?.firstName + " " + (participant as UserType)?.lastName}
+                            </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-[2.5px]">
@@ -63,15 +86,22 @@ export default function Message({ id }: { id: string }) {
                 chatMessages={chatMessages}
                 setChatMessages={setChatMessages}
                 userId={user?._id ?? ''}
-                recipientId={id}
+                recipientId={(participant as UserType)?._id}
             />
         </div>
     )
 }
 
 async function deliverMessage(message: MessageType) {
-    const data = JSON.parse(JSON.stringify(message)) as MessageType;
-    data.status = "sent";
-    await new Promise((res) => setTimeout(res, 1000));
-    return data;
+    console.log("SEND MESSAGE", message)
+
+    const response = await fetch("/api/messages/message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            data: message,
+        }),
+    });
+
+    return await response.json();
 }

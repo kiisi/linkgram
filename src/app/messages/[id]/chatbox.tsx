@@ -1,7 +1,7 @@
 import { MessageType } from "@/@types";
 import { SendIcon } from "@/components/common/svgs"
 import { CheckCheckIcon, CheckIcon, Clock8Icon, LinkIcon } from "lucide-react"
-import { nanoid } from "nanoid";
+import { Types } from "mongoose";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export default function ChatBox({
@@ -30,7 +30,7 @@ export default function ChatBox({
         const message = formData.get("message")
 
         const payload = {
-            _id: nanoid(),
+            _id: new Types.ObjectId().toString(),
             text: message as string,
             status: "sending" as const,
             from: userId,
@@ -61,16 +61,27 @@ export default function ChatBox({
         if (chatContainerRef.current) {
             const container = chatContainerRef.current;
             // Determine whether to scroll down based on the type and content of messages
-            const shouldScroll = container.scrollHeight - container.scrollTop === container.clientHeight;
-
-            // Check if messages array length has changed
-            if (shouldScroll || toBeSendedMessages.length > 0) {
-                setTimeout(() => {
-                    container.scrollTop = container.scrollHeight;
-                }, 150)
-            }
+            setTimeout(() => {
+                container.scrollTop = container.scrollHeight;
+            }, 150)
         }
     }, [chatMessages.length])
+
+    useEffect(() => {
+        const handleScrollToBottom = () => {
+            setTimeout(() => {
+                console.log("RUnningg.....")
+                if (chatContainerRef.current) {
+                    const container = chatContainerRef.current;
+                    // Determine whether to scroll down based on the type and content of messages
+                    container.scrollTop = Number.POSITIVE_INFINITY;
+                }
+            }, 150); // Scroll to top after 100ms
+        };
+
+        handleScrollToBottom(); // Run on component mount
+
+    }, []);
 
     return (
         <>
@@ -120,11 +131,11 @@ const BubbleRightAppendix = () => {
     )
 }
 
-const BubbleLeftAppendix = () => {
-    return (
-        <svg width="9" height="20"><defs><filter x="-50%" y="-14.7%" width="200%" height="141.2%" filterUnits="objectBoundingBox" id="messageAppendix"><feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset><feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur><feColorMatrix values="0 0 0 0 0.0621962482 0 0 0 0 0.138574144 0 0 0 0 0.185037364 0 0 0 0.15 0" in="shadowBlurOuter1"></feColorMatrix></filter></defs><g fill="none" fillRule="evenodd"><path d="M3 17h6V0c-.193 2.84-.876 5.767-2.05 8.782-.904 2.325-2.446 4.485-4.625 6.48A1 1 0 003 17z" fill="#000" filter="url(#messageAppendix)"></path><path d="M3 17h6V0c-.193 2.84-.876 5.767-2.05 8.782-.904 2.325-2.446 4.485-4.625 6.48A1 1 0 003 17z" fill="FFF"></path></g></svg>
-    )
-}
+// const BubbleLeftAppendix = () => {
+//     return (
+//         <svg width="9" height="20"><defs><filter x="-50%" y="-14.7%" width="200%" height="141.2%" filterUnits="objectBoundingBox" id="messageAppendix"><feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset><feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur><feColorMatrix values="0 0 0 0 0.0621962482 0 0 0 0 0.138574144 0 0 0 0 0.185037364 0 0 0 0.15 0" in="shadowBlurOuter1"></feColorMatrix></filter></defs><g fill="none" fillRule="evenodd"><path d="M3 17h6V0c-.193 2.84-.876 5.767-2.05 8.782-.904 2.325-2.446 4.485-4.625 6.48A1 1 0 003 17z" fill="#000" filter="url(#messageAppendix)"></path><path d="M3 17h6V0c-.193 2.84-.876 5.767-2.05 8.782-.904 2.325-2.446 4.485-4.625 6.48A1 1 0 003 17z" fill="FFF"></path></g></svg>
+//     )
+// }
 
 /*
 right
