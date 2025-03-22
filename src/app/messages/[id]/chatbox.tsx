@@ -18,8 +18,6 @@ export default function ChatBox({
     sendMessage: (data: MessageType) => void
 }) {
 
-    console.log(chatMessages)
-
     const [toBeSendedMessages, setToBeSendedMessages] = useState<MessageType[]>([])
     // const [message, setMessage] = useState('');
 
@@ -89,7 +87,7 @@ export default function ChatBox({
                 {
                     chatMessages.map((data, index) => (
                         <div key={index} className="flex justify-end px-4 my-2">
-                            <div className="max-w-[90%] bg-[#EEFFDE] pl-[5px] pr-2 relative flex rounded-l-[24px] rounded-tr-[8px]">
+                            <div className="max-w-[90%] bg-[#EEFFDE] pl-[5px] pr-2 relative flex rounded-l-[16px] rounded-tr-[16px]">
                                 <p className="px-[5px] pb-[5px] pt-[6px] inline-block flex-1 text-[14.5px]">{data?.text}</p>
                                 <div className="mt-auto relative bottom-0 pl-2 flex gap-[3px]">
                                     <span className="text-[12.5px] leading-[20px] text-[#45af54]">12:24</span>

@@ -22,8 +22,8 @@ export interface MessageType {
     _id?: string;
     tempId?: string;
     chatId?: string;
-    to: string | UserType[];
-    from: string | UserType[];
+    to: string | UserType;
+    from: string | UserType;
     text?: string;
     mediaUrl?: string;
     file?: string;

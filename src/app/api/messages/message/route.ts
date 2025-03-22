@@ -1,5 +1,5 @@
 import { MessageType } from "@/@types";
-// import { jwtTokenDecoder } from "@/lib";
+import { jwtTokenDecoder } from "@/lib";
 import MessageModel from "@/lib/models/message";
 import dbConnect from "@/lib/mongoose";
 import { NextRequest } from "next/server";
@@ -35,9 +35,9 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        // const token = request.cookies.get('token')
+        const token = request.cookies.get('token')
 
-        // const data = await jwtTokenDecoder(token?.value ?? '');
+        const tokeData = await jwtTokenDecoder(token?.value ?? '');
 
         const refinedData: MessageType = {
             _id: payload._id,
@@ -57,6 +57,8 @@ export async function POST(request: NextRequest) {
         .exec();
 
         const data = conversation?.messages.find((item) => item._id.toString() === refinedData._id);
+
+        console.log(tokeData?._id?.toString() === refinedData.from)
 
         await pusher.trigger('chat-room', 'new-message-event', data);
 

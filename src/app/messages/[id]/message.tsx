@@ -27,9 +27,9 @@ export default function Message({ id }: { id: string }) {
     async function sendMessage(data: MessageType) {
         const payload: MessageType = {
             ...data,
-            chatId: chat?._id, 
+            chatId: chat?._id,
         }
-        
+
         await deliverMessage(payload);
     }
 
@@ -38,18 +38,25 @@ export default function Message({ id }: { id: string }) {
         const channel = pusher.subscribe("chat-room");
 
         channel.bind("new-message-event", (data: MessageType) => {
-            setChatMessages((prevMessages) =>
-                prevMessages.map((msg) =>
-                    msg._id === data._id ? data : msg
-                )
-            );
+
+            console.log("Success Data ===>", data)
+            if (user?._id === (data.from as UserType)?._id) {
+                setChatMessages((prevMessages) => {
+                    return prevMessages.map((msg) =>
+                        msg._id === data._id ? data : msg
+                    )
+                });
+            } 
+            else {
+                setChatMessages((prevMessages) => [...prevMessages, data])
+            }
         });
 
         return () => {
             channel.unbind_all();
             channel.unsubscribe();
         };
-    }, []);
+    }, [chatMessages.length]);
 
     return (
         <div className="h-full w-full bg-white rounded-[8px] flex flex-col chat-box-layout ">
