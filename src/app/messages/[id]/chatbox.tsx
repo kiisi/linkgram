@@ -1,4 +1,4 @@
-import { MessageType } from "@/@types";
+import { MessageType, UserType } from "@/@types";
 import { SendIcon } from "@/components/common/svgs"
 import { CheckCheckIcon, CheckIcon, Clock8Icon, LinkIcon } from "lucide-react"
 import { Types } from "mongoose";
@@ -81,25 +81,39 @@ export default function ChatBox({
 
     }, []);
 
+    console.log(chatMessages)
+
     return (
         <>
             <div ref={chatContainerRef} className="scroll-smooth chat-box-scroll-container overflow-y-auto flex-1 h-full w-full bg-[url(/images/chat-bg.png)] bg-no-repeat bg-cover">
                 {
                     chatMessages.map((data, index) => (
-                        <div key={index} className="flex justify-end px-4 my-2">
-                            <div className="max-w-[90%] bg-[#EEFFDE] pl-[5px] pr-2 relative flex rounded-l-[16px] rounded-tr-[16px]">
-                                <p className="px-[5px] pb-[5px] pt-[6px] inline-block flex-1 text-[14.5px]">{data?.text}</p>
-                                <div className="mt-auto relative bottom-0 pl-2 flex gap-[3px]">
-                                    <span className="text-[12.5px] leading-[20px] text-[#45af54]">12:24</span>
-                                    {
-                                        data.status === "seen" && <CheckCheckIcon className="text-[#45af54] size-[18px]" />
-                                    }
-                                    {data.status === "sent" && <CheckIcon className="text-[#45af54] size-[18px]" />}
-                                    {data.status === "sending" && <Clock8Icon className="text-[#45af54] size-[18px]" />}
+                        (userId === data.from) || (userId === (data.from as UserType)?._id) ? (
+                            <div key={index} className="flex justify-end px-4 my-2">
+                                <div className="max-w-[90%] bg-[#EEFFDE] pl-[5px] pr-2 relative flex rounded-l-[14px] rounded-tr-[16px]">
+                                    <p className="px-[5px] pb-[5px] pt-[6px] inline-block flex-1 text-[14.5px]">{data?.text}</p>
+                                    <div className="mt-auto relative bottom-0 pl-2 flex gap-[3px]">
+                                        <span className="text-[12.5px] leading-[20px] text-[#45af54]">12:24</span>
+                                        {
+                                            data.status === "seen" && <CheckCheckIcon className="text-[#45af54] size-[18px]" />
+                                        }
+                                        {data.status === "sent" && <CheckIcon className="text-[#45af54] size-[18px]" />}
+                                        {data.status === "sending" && <Clock8Icon className="text-[#45af54] size-[18px]" />}
+                                    </div>
+                                    <BubbleRightAppendix />
                                 </div>
-                                <BubbleRightAppendix />
                             </div>
-                        </div>
+                        ) : (
+                            <div key={index} className="flex justify-start px-4 my-2">
+                                <div className="max-w-[90%] bg-[#ffffff] pl-[5px] pr-2 relative flex rounded-r-[14px] rounded-tl-[16px]">
+                                    <p className="text-[#101010] px-[5px] pb-[5px] pt-[6px] inline-block flex-1 text-[14.5px]">{data?.text}</p>
+                                    <div className="mt-auto relative bottom-0 pl-2 pr-[5px] flex gap-[3px]">
+                                        <span className="text-[12.5px] leading-[20px] text-[#9C9EA2]">12:24</span>
+                                    </div>
+                                    <BubbleLeftAppendix />
+                                </div>
+                            </div>
+                        )
                     ))
                 }
             </div>
@@ -129,11 +143,11 @@ const BubbleRightAppendix = () => {
     )
 }
 
-// const BubbleLeftAppendix = () => {
-//     return (
-//         <svg width="9" height="20"><defs><filter x="-50%" y="-14.7%" width="200%" height="141.2%" filterUnits="objectBoundingBox" id="messageAppendix"><feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset><feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur><feColorMatrix values="0 0 0 0 0.0621962482 0 0 0 0 0.138574144 0 0 0 0 0.185037364 0 0 0 0.15 0" in="shadowBlurOuter1"></feColorMatrix></filter></defs><g fill="none" fillRule="evenodd"><path d="M3 17h6V0c-.193 2.84-.876 5.767-2.05 8.782-.904 2.325-2.446 4.485-4.625 6.48A1 1 0 003 17z" fill="#000" filter="url(#messageAppendix)"></path><path d="M3 17h6V0c-.193 2.84-.876 5.767-2.05 8.782-.904 2.325-2.446 4.485-4.625 6.48A1 1 0 003 17z" fill="FFF"></path></g></svg>
-//     )
-// }
+const BubbleLeftAppendix = () => {
+    return (
+        <svg className="absolute bottom-[-3px] left-[-7.8px]" width="9" height="20"><defs><filter x="-50%" y="-14.7%" width="200%" height="141.2%" filterUnits="objectBoundingBox" id="messageAppendix"><feOffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset><feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur><feColorMatrix values="0 0 0 0 0.0621962482 0 0 0 0 0.138574144 0 0 0 0 0.185037364 0 0 0 0.15 0" in="shadowBlurOuter1"></feColorMatrix></filter></defs><g fill="none" fillRule="evenodd"><path d="M3 17h6V0c-.193 2.84-.876 5.767-2.05 8.782-.904 2.325-2.446 4.485-4.625 6.48A1 1 0 003 17z" fill="#000" filter="url(#messageAppendix)"></path><path d="M3 17h6V0c-.193 2.84-.876 5.767-2.05 8.782-.904 2.325-2.446 4.485-4.625 6.48A1 1 0 003 17z" fill="#ffffff"></path></g></svg>
+    )
+}
 
 /*
 right
