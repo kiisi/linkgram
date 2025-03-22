@@ -29,22 +29,33 @@ if (!cached) {
 
 async function dbConnect() {
 
-    if (cached.conn) {
-        return cached.conn;
-    }
+    if (process.env.NODE_ENV === "production") {
+        await mongoose.connect(MONGODB_URI);
 
-    if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
-            return mongoose;
-        });
+        return {
+            status: 'success',
+            message: 'Connection to server successful',
+            data: null
+        };
     }
-    cached.conn = await cached.promise;
+    else {
+        if (cached.conn) {
+            return cached.conn;
+        }
 
-    return {
-        status: 'success',
-        message: 'Connection to server successful',
-        data: null
-    };
+        if (!cached.promise) {
+            cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
+                return mongoose;
+            });
+        }
+        cached.conn = await cached.promise;
+
+        return {
+            status: 'success',
+            message: 'Connection to server successful',
+            data: null
+        };
+    }
 }
 
 if (process.env.NODE_ENV !== "production") {
