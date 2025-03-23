@@ -18,6 +18,7 @@ export default function Layout({
 
     const isChatSidebarActive = pathname !== '/messages' && !isNotMobileScreen;
     const isMessageBoxActive = pathname === '/messages' && !isNotMobileScreen;
+    console.log(isMessageBoxActive)
 
     return (
         <ChatsProvider>
