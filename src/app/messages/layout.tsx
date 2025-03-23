@@ -16,8 +16,6 @@ export default function Layout({
         query: '(min-width: 640px)'
     })
 
-    console.log(pathname)
-
     const isChatSidebarActive = pathname !== '/messages' && !isNotMobileScreen;
     const isMessageBoxActive = pathname === '/messages' && !isNotMobileScreen;
 
@@ -39,5 +37,3 @@ export default function Layout({
         </ChatsProvider>
     );
 }
-
-// isChatSidebarActive && "sm:max-w-[300px] lg:max-w-[360px]"
