@@ -1,28 +1,30 @@
 import { MessageType, UserType } from "@/@types";
 import { SendIcon } from "@/components/common/svgs"
+import { useChatsContext } from "@/contexts/chats";
 import { CheckCheckIcon, CheckIcon, Clock8Icon, LinkIcon } from "lucide-react"
 import { Types } from "mongoose";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export default function ChatBox({
     userId,
+    chatId,
     recipientId,
     chatMessages,
-    setChatMessages,
     sendMessage,
 }: {
+    chatId: string;
     userId: string;
     recipientId: string;
     chatMessages: MessageType[];
-    setChatMessages: (prev: (data: MessageType[]) => MessageType[]) => void;
     sendMessage: (data: MessageType) => void
 }) {
 
-    const [toBeSendedMessages, setToBeSendedMessages] = useState<MessageType[]>([])
-    // const [message, setMessage] = useState('');
+    const { dispatch } = useChatsContext();
+
+    const [toBeSendedMessages, setToBeSendedMessages] = useState<MessageType[]>([]);
 
     const formRef = useRef<HTMLFormElement>(null);
-    const chatContainerRef = useRef<HTMLDivElement>(null)
+    const chatContainerRef = useRef<HTMLDivElement>(null);
 
     async function formAction(formData: FormData) {
         const message = formData.get("message")
@@ -36,7 +38,13 @@ export default function ChatBox({
             messageType: "text" as const,
         }
 
-        setChatMessages((prev) => [...prev, payload]);
+        dispatch({
+            type: "ADD_CHAT",
+            payload: {
+                chatId: chatId,
+                message: payload,
+            }
+        })
         setToBeSendedMessages(prev => [...prev, payload]);
         formRef.current?.reset();
     }

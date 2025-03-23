@@ -3,7 +3,7 @@ import { MessageType, UserType } from "@/@types"
 import { useChatsContext } from "@/contexts/chats"
 import { useUserContext } from "@/contexts/user"
 import { Phone, Video } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Pusher from 'pusher-js';
 import ChatBox from "./chatbox"
 import { useRouter } from "next/navigation"
@@ -19,13 +19,13 @@ export default function Message({ id }: { id: string }) {
 
     const { user } = useUserContext()
 
-    const { chats } = useChatsContext()
+    const { chats, dispatch } = useChatsContext()
 
     const chat = chats.find(data => data._id === id);
 
-    const participant = (chat?.participants.find(data => typeof data !== "string" && data._id !== user?._id)) || chat?.participants[0];
+    const chatMessages = chat?.messages ?? [];
 
-    const [chatMessages, setChatMessages] = useState<MessageType[]>(chat?.messages ?? []);
+    const participant = (chat?.participants.find(data => typeof data !== "string" && data._id !== user?._id)) || chat?.participants[0];
 
     async function sendMessage(data: MessageType) {
         const payload: MessageType = {
@@ -43,15 +43,24 @@ export default function Message({ id }: { id: string }) {
         channel.bind("new-message-event", (data: MessageType) => {
 
             console.log("Success Data ===>", data)
+            
             if (user?._id === (data.from as UserType)?._id) {
-                setChatMessages((prevMessages) => {
-                    return prevMessages.map((msg) =>
-                        msg._id === data._id ? data : msg
-                    )
-                });
+                dispatch({ 
+                    type: "UPDATE_CHAT", 
+                    payload: {
+                        chatId: id,
+                        message: data,
+                    }
+                })
             }
             else {
-                setChatMessages((prevMessages) => [...prevMessages, data])
+                dispatch({ 
+                    type: "ADD_CHAT", 
+                    payload: {
+                        chatId: id,
+                        message: data,
+                    }
+                })
             }
         });
 
@@ -96,9 +105,9 @@ export default function Message({ id }: { id: string }) {
                 </header>
             </div>
             <ChatBox
+                chatId={id}
                 sendMessage={sendMessage}
                 chatMessages={chatMessages}
-                setChatMessages={setChatMessages}
                 userId={user?._id ?? ''}
                 recipientId={(participant as UserType)?._id}
             />

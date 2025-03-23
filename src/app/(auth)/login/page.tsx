@@ -22,9 +22,7 @@ export default function Page() {
     useEffect(() => {
         if (state?.success) {
             // Redirect after a short delay to show the success message
-            setTimeout(() => {
-                router.push("/messages");
-            }, 1200) // Change to the desired page
+            router.push("/messages");
         }
     }, [state?.success, router]);
 
