@@ -28,7 +28,7 @@ export default function Layout({
                     {isChatSidebarActive ? null : <ChatsSideNavigation />}
                     {
                         isMessageBoxActive ? null : (
-                            <main className="bg-[#f2f4f7] p-[12px] flex-1">
+                            <main className="bg-[#f2f4f7] px-[12px] py-[12px] flex-1">
                                 {message}
                             </main>
                         )

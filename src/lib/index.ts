@@ -24,3 +24,4 @@ export async function getToken() {
     const cookiesStore = await cookies();
     return cookiesStore.get('token')?.value;
 }
+

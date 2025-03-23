@@ -84,10 +84,10 @@ export default function Message({ id }: { id: string }) {
                         </button>
                         <div className="flex gap-[8px] items-center cursor-pointer hover:bg-[#F2F2F2] p-[5px] rounded-[8px]">
                             <div className="text-center text-[14.5px] tracking-[1px] leading-[40px] h-[40px] w-[40px] rounded-full bg-primary-alt text-white shrink-0">
-                                DF
+                                {(participant as UserType)?.firstName[0] + "" + (participant as UserType)?.lastName[0]}
                             </div>
-                            <p className="font-medium text-[14.5px] mt-[1px] text-[#121414] overflow-hidden truncate">
-                                {(participant as UserType)?.firstName + " " + (participant as UserType)?.lastName}
+                            <p className="font-medium text-[14.5px] mt-[1px] text-[#121414] line-clamp-1">
+                                {(participant as UserType)?.firstName + " " + (participant as UserType)?.lastName} 
                             </p>
                         </div>
                     </div>

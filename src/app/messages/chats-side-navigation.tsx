@@ -8,13 +8,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import { CheckCircle2Icon, CircleAlertIcon, MessageCircleIcon, MessageCirclePlus, SearchIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, getRelativeTime } from "@/lib/utils";
 import { useChatsContext } from "@/contexts/chats";
 import { IUser } from "@/lib/models/user";
 import { Button } from "@/components/ui/button";
 import NewChatDialog from "./new-chat-dialog";
 import { Input } from "@/components/ui/input";
 import { useUserContext } from "@/contexts/user";
+import { usePathname } from "next/navigation";
 
 type Tabs = "INBOX" | "MESSAGE_REQUESTS" | "ARCHIVED_CHATS";
 
@@ -24,6 +25,9 @@ const initialState: CreateNewChatActionResponse = {
 }
 
 export default function ChatsSideNavigation() {
+
+    const pathname = usePathname()
+    console.log(pathname)
 
     const { user } = useUserContext()
     const { chats: chatMessages } = useChatsContext()
@@ -48,7 +52,7 @@ export default function ChatsSideNavigation() {
 
 
     return (
-        <div className={cn("relative flex flex-col" , "w-full" , "w-full sm:max-w-[300px] lg:max-w-[360px]")}>
+        <div className={cn("relative flex flex-col", "w-full", "w-full sm:max-w-[300px] lg:max-w-[360px]")}>
             <header className="pt-3 pb-4 px-[16px]">
                 <div className="flex justify-between items-center mb-3">
                     <h1 className="text-[24px] font-bold">Chats</h1>
@@ -132,23 +136,35 @@ export default function ChatsSideNavigation() {
                 chatMessages?.length !== 0 && (
                     <div className="flex-1 flex flex-col pb-2 gap-[4px] overflow-y-auto pl-[10px] pr-[10px]">
                         {
-                            chatMessages?.map((data, index) => {
+                            chatMessages?.map((data) => {
 
                                 let participant = data.participants.find(data => typeof data !== "string" && data._id !== user?._id);
                                 if (!participant) {
                                     participant = data.participants[0]
                                 }
 
+                                const message = data.messages[data.messages.length - 1];
+
+                                const isChatActive = '/messages/' + data._id === pathname;
+
                                 return (
-                                    <Link href={'/messages/' + data._id} key={index} className="group relative p-[6px] flex gap-[8px] items-center hover:bg-[#f4f4f5] bg-[F2EEFF] rounded-[8px]">
+                                    <Link
+                                        href={'/messages/' + data._id}
+                                        key={data._id}
+                                        className={cn("group relative p-[6px] flex gap-[8px] items-center rounded-[8px]", isChatActive ? "bg-primary" : "hover:bg-[#f4f4f5]")}
+                                    >
                                         <figure>
                                             <div className="text-center text-[14.5px] tracking-[1px] leading-[56px] h-[56px] w-[56px] rounded-full bg-primary-alt text-white">
-                                                DF
+                                                {(participant as IUser)?.firstName[0] + "" + (participant as IUser)?.lastName[0]} 
                                             </div>
                                         </figure>
                                         <div>
-                                            <h2 className="text-[14.5px] font-medium">{(participant as IUser)?.firstName + " " + (participant as IUser)?.lastName}</h2>
-                                            <p className="text-[12.5px] text-[#65686c]">You: Crispy • 4h</p>
+                                            <h2 className={cn("text-[14.5px] break-all line-clamp-1 font-medium", isChatActive ? "text-white" : "text-[#65686c]")}>
+                                                {(participant as IUser)?.firstName + " " + (participant as IUser)?.lastName}
+                                            </h2>
+                                            <p className={cn("text-[13.5px] break-all line-clamp-1", isChatActive ? "text-white" : "text-[#65686c]")}>
+                                                You: {message?.text} • {getRelativeTime(message?.updatedAt ?? '') }
+                                            </p>
                                         </div>
                                         <div className="cursor-pointer hidden group-hover:grid absolute right-[8px] shadow-md top-[50%] translate-y-[-50%] h-[32px] w-[32px] bg-white place-items-center rounded-full">
                                             <svg viewBox="0 0 20 20" width="20" height="20" fill="currentColor" aria-hidden="true" style={{ color: "#65686c" }}><g fillRule="evenodd" transform="translate(-446 -398)"><path d="M458 408a2 2 0 1 1-4 0 2 2 0 0 1 4 0m6 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0m-12 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0"></path></g></svg>

@@ -30,4 +30,6 @@ export interface MessageType {
     messageType: "text" | "image" | "video" | "audio" | "file" | "sticker" | "media";
     replyTo?: string;
     status: "sending" | "sent" | "delivered" | "seen";
+    updatedAt?: string;
+    createdAt?: string;
 }

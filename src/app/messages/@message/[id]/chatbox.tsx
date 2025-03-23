@@ -98,26 +98,24 @@ export default function ChatBox({
                     chatMessages.map((data, index) => (
                         (userId === data.from) || (userId === (data.from as UserType)?._id) ? (
                             <div key={index} className="flex justify-end px-4 my-2">
-                                <div className="max-w-[90%] bg-[#EEFFDE] pl-[5px] pr-2 relative flex rounded-l-[14px] rounded-tr-[16px]">
-                                    <p className="px-[5px] pb-[5px] pt-[6px] inline-block flex-1 text-[14.5px]">{data?.text}</p>
-                                    <div className="mt-auto relative bottom-0 pl-2 flex gap-[3px]">
-                                        <span className="text-[12.5px] leading-[20px] text-[#45af54]">12:24</span>
-                                        {
-                                            data.status === "seen" && <CheckCheckIcon className="text-[#45af54] size-[18px]" />
-                                        }
-                                        {data.status === "sent" && <CheckIcon className="text-[#45af54] size-[18px]" />}
-                                        {data.status === "sending" && <Clock8Icon className="text-[#45af54] size-[18px]" />}
-                                    </div>
+                                <div className="max-w-[90%] bg-[#EEFFDE] text-[15.5px] pt-[6px] pb-[6px] px-[10px] relative rounded-l-[14px] rounded-tr-[16px]">
+                                    {data?.text}
+                                    <span className="float-right relative flex items-center translate-y-[8px] pl-[10px] h-[21px] gap-[3px]">
+                                        <span className="inline-block text-[12px] text-[#45af54]">12:24</span>
+                                        <span className="inline-block">
+                                            {data.status === "seen" && <CheckCheckIcon className="text-[#45af54] size-[18px]" />}
+                                            {data.status === "sent" && <CheckIcon className="text-[#45af54] size-[18px]" />}
+                                            {data.status === "sending" && <Clock8Icon className="text-[#45af54] size-[18px]" />}
+                                        </span>
+                                    </span>
                                     <BubbleRightAppendix />
                                 </div>
                             </div>
                         ) : (
                             <div key={index} className="flex justify-start px-4 my-2">
-                                <div className="max-w-[90%] bg-[#ffffff] pl-[5px] pr-2 relative flex rounded-r-[14px] rounded-tl-[16px]">
-                                    <p className="text-[#101010] px-[5px] pb-[5px] pt-[6px] inline-block flex-1 text-[14.5px]">{data?.text}</p>
-                                    <div className="mt-auto relative bottom-0 pl-2 pr-[5px] flex gap-[3px]">
-                                        <span className="text-[12.5px] leading-[20px] text-[#9C9EA2]">12:24</span>
-                                    </div>
+                                <div className="max-w-[90%] bg-[#ffffff] text-[15.5px] pt-[6px] pb-[6px] px-[10px] text-[#101010] relative rounded-r-[14px] rounded-tl-[16px]">
+                                    {data?.text}
+                                    <span className="float-right text-[12.5px] text-[#9C9EA2] pl-[10px] h-[21px] translate-y-[8px]">12:24</span>
                                     <BubbleLeftAppendix />
                                 </div>
                             </div>
