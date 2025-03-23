@@ -77,7 +77,7 @@ export default function Message({ id }: { id: string }) {
     return (
         <div className="h-full w-full bg-white rounded-[8px] flex flex-col chat-box-layout">
             <div className="shadow-sm px-[8px]">
-                <header className="h-[56px] flex items-center justify-between">
+                <header className="h-[56px] flex gap-[12px] items-center justify-between">
                     <div className="flex items-center gap-[5px]">
                         <button onClick={backNavigationHandler} className="sm:hidden grid place-items-center cursor-pointer h-[36px] w-[36px] rounded-full hover:bg-[#F2F2F2]">
                             <svg viewBox="0 0 12 13" width="20" height="20" fill="currentColor" aria-hidden="true" className="" style={{ color: 'var(--color-primary)' }}><g fillRule="evenodd" transform="translate(-450 -1073)"><g fillRule="nonzero"><path d="M100.655 923.405a.75.75 0 0 0-1.06-1.06l-3.125 3.125a.75.75 0 0 0 0 1.06l3.125 3.125a.75.75 0 0 0 1.06-1.06L98.061 926l2.594-2.595z" transform="translate(355 153.5)"></path><path d="M105 925.25h-7.688a.75.75 0 1 0 0 1.5H105a.75.75 0 1 0 0-1.5z" transform="translate(355 153.5)"></path></g></g></svg>
@@ -86,7 +86,7 @@ export default function Message({ id }: { id: string }) {
                             <div className="text-center text-[14.5px] tracking-[1px] leading-[40px] h-[40px] w-[40px] rounded-full bg-primary-alt text-white shrink-0">
                                 {(participant as UserType)?.firstName[0] + "" + (participant as UserType)?.lastName[0]}
                             </div>
-                            <p className="font-medium text-[14.5px] mt-[1px] text-[#121414] line-clamp-1">
+                            <p className="flex-1 font-medium break-all text-[14.5px] mt-[1px] text-[#121414] line-clamp-1">
                                 {(participant as UserType)?.firstName + " " + (participant as UserType)?.lastName} 
                             </p>
                         </div>
