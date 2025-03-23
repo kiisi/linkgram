@@ -16,6 +16,7 @@ import NewChatDialog from "./new-chat-dialog";
 import { Input } from "@/components/ui/input";
 import { useUserContext } from "@/contexts/user";
 import { usePathname } from "next/navigation";
+import { UserType } from "@/@types";
 
 type Tabs = "INBOX" | "MESSAGE_REQUESTS" | "ARCHIVED_CHATS";
 
@@ -27,7 +28,6 @@ const initialState: CreateNewChatActionResponse = {
 export default function ChatsSideNavigation() {
 
     const pathname = usePathname()
-    console.log(pathname)
 
     const { user } = useUserContext()
     const { chats: chatMessages } = useChatsContext()
@@ -147,6 +147,8 @@ export default function ChatsSideNavigation() {
 
                                 const isChatActive = '/messages/' + data._id === pathname;
 
+                                const isCurrentUser = (user?._id === message.from) || (user?._id === (message.from as UserType)._id);
+
                                 return (
                                     <Link
                                         href={'/messages/' + data._id}
@@ -163,7 +165,7 @@ export default function ChatsSideNavigation() {
                                                 {(participant as IUser)?.firstName + " " + (participant as IUser)?.lastName}
                                             </h2>
                                             <p className={cn("text-[13.5px] break-all line-clamp-1", isChatActive ? "text-white" : "text-[#65686c]")}>
-                                                You: {message?.text} • {getRelativeTime(message?.updatedAt ?? '') }
+                                                {isCurrentUser && "You: "} {message?.text} • {getRelativeTime(message?.updatedAt ?? '') }
                                             </p>
                                         </div>
                                         <div className="cursor-pointer hidden group-hover:grid absolute right-[8px] shadow-md top-[50%] translate-y-[-50%] h-[32px] w-[32px] bg-white place-items-center rounded-full">
