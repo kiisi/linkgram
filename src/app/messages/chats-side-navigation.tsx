@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useEffect, useState } from "react";
@@ -45,8 +46,9 @@ export default function ChatsSideNavigation() {
         }
     }, [state?.success]);
 
+
     return (
-        <div className="relative flex flex-col ml-[-300px] md:ml-0 w-full max-w-[300px] lg:max-w-[360px]">
+        <div className={cn("relative flex flex-col" , "w-full" , "w-full sm:max-w-[300px] lg:max-w-[360px]")}>
             <header className="pt-3 pb-4 px-[16px]">
                 <div className="flex justify-between items-center mb-3">
                     <h1 className="text-[24px] font-bold">Chats</h1>

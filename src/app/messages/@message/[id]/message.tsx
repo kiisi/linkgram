@@ -4,8 +4,9 @@ import { useChatsContext } from "@/contexts/chats"
 import { useUserContext } from "@/contexts/user"
 import { Phone, Video } from "lucide-react"
 import { useEffect, useState } from "react"
-import ChatBox from "./chatbox"
 import Pusher from 'pusher-js';
+import ChatBox from "./chatbox"
+import { useRouter } from "next/navigation"
 
 const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
     cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER!,
@@ -13,6 +14,8 @@ const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
 
 
 export default function Message({ id }: { id: string }) {
+
+    const router = useRouter();
 
     const { user } = useUserContext()
 
@@ -46,7 +49,7 @@ export default function Message({ id }: { id: string }) {
                         msg._id === data._id ? data : msg
                     )
                 });
-            } 
+            }
             else {
                 setChatMessages((prevMessages) => [...prevMessages, data])
             }
@@ -58,19 +61,23 @@ export default function Message({ id }: { id: string }) {
         };
     }, [chatMessages.length]);
 
+    const backNavigationHandler = () => {
+        router.push('/messages');
+    };
+
     return (
-        <div className="h-full w-full bg-white rounded-[8px] flex flex-col chat-box-layout ">
+        <div className="h-full w-full bg-white rounded-[8px] flex flex-col chat-box-layout">
             <div className="shadow-sm px-[8px]">
                 <header className="h-[56px] flex items-center justify-between">
                     <div className="flex items-center gap-[5px]">
-                        <button className="md:hidden grid place-items-center cursor-pointer h-[36px] w-[36px] rounded-full hover:bg-[#F2F2F2]">
+                        <button onClick={backNavigationHandler} className="sm:hidden grid place-items-center cursor-pointer h-[36px] w-[36px] rounded-full hover:bg-[#F2F2F2]">
                             <svg viewBox="0 0 12 13" width="20" height="20" fill="currentColor" aria-hidden="true" className="" style={{ color: 'var(--color-primary)' }}><g fillRule="evenodd" transform="translate(-450 -1073)"><g fillRule="nonzero"><path d="M100.655 923.405a.75.75 0 0 0-1.06-1.06l-3.125 3.125a.75.75 0 0 0 0 1.06l3.125 3.125a.75.75 0 0 0 1.06-1.06L98.061 926l2.594-2.595z" transform="translate(355 153.5)"></path><path d="M105 925.25h-7.688a.75.75 0 1 0 0 1.5H105a.75.75 0 1 0 0-1.5z" transform="translate(355 153.5)"></path></g></g></svg>
                         </button>
                         <div className="flex gap-[8px] items-center cursor-pointer hover:bg-[#F2F2F2] p-[5px] rounded-[8px]">
-                            <div className="text-center text-[14.5px] tracking-[1px] leading-[40px] h-[40px] w-[40px] rounded-full bg-primary-alt text-white">
+                            <div className="text-center text-[14.5px] tracking-[1px] leading-[40px] h-[40px] w-[40px] rounded-full bg-primary-alt text-white shrink-0">
                                 DF
                             </div>
-                            <p className="font-medium text-[14.5px] mt-[1px] text-[#121414]">
+                            <p className="font-medium text-[14.5px] mt-[1px] text-[#121414] overflow-hidden truncate">
                                 {(participant as UserType)?.firstName + " " + (participant as UserType)?.lastName}
                             </p>
                         </div>
