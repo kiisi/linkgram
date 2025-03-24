@@ -1,8 +1,10 @@
 "use client"
 import { ChatsProvider } from "@/contexts/chats";
-import ChatsSideNavigation from "./chats-side-navigation";
 import { usePathname } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
+import dynamic from "next/dynamic";
+
+const ChatsSideNavigation = dynamic(()=>import("./chats-side-navigation"))
 
 export default function Layout({
     message,
@@ -21,7 +23,6 @@ export default function Layout({
     return (
         <ChatsProvider>
             <div className="h-screen">
-                {/* <NavigationBar /> */}
                 <div className="-not-needed-h-[calc(100vh_-_56px)] h-screen w-full flex">
                     {isChatSidebarActive ? null : <ChatsSideNavigation />}
                     {

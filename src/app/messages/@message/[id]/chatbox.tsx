@@ -64,32 +64,27 @@ export default function ChatBox({
     }, [toBeSendedMessages])
 
     useLayoutEffect(() => {
-        if (chatContainerRef.current) {
-            const container = chatContainerRef.current;
-            // Determine whether to scroll down based on the type and content of messages
-            setTimeout(() => {
-                container.scrollTop = container.scrollHeight;
-            }, 150)
-        }
+        scrollToBottom()
     }, [chatMessages.length])
 
     useEffect(() => {
-        const handleScrollToBottom = () => {
-            setTimeout(() => {
-                console.log("RUnningg.....")
-                if (chatContainerRef.current) {
-                    const container = chatContainerRef.current;
-                    // Determine whether to scroll down based on the type and content of messages
-                    container.scrollTop = Number.POSITIVE_INFINITY;
-                }
-            }, 150); // Scroll to top after 100ms
-        };
+        scrollToBottom(); // Run on component mount
+    }, [chatId]);
 
-        handleScrollToBottom(); // Run on component mount
-
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            scrollToBottom();
+        }, 100);
+        
+        return () => clearTimeout(timer);
     }, []);
 
-    console.log(chatMessages)
+    const scrollToBottom = () => {
+        if (chatContainerRef.current) {
+            const container = chatContainerRef.current;
+            container.scrollTop = container.scrollHeight;
+        }
+    }
 
     return (
         <>
