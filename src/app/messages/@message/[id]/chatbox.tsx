@@ -93,7 +93,7 @@ export default function ChatBox({
                     chatMessages.map((data, index) => (
                         (userId === data.from) || (userId === (data.from as UserType)?._id) ? (
                             <div key={index} className="flex justify-end px-4 my-2">
-                                <div className="shadow-[0px_1px_2px_#72727240] max-w-[90%] bg-[#EEFFDE] text-[14.5px] py-[6px] px-[10px] relative rounded-l-[14px] rounded-tr-[16px] font-light">
+                                <div className="shadow-[0px_1px_2px_#72727240] max-w-[90%] lg:max-w-[80%] bg-[#EEFFDE] text-[14.5px] py-[6px] px-[10px] relative rounded-l-[14px] rounded-tr-[16px] font-light">
                                     {data?.text}
                                     <span className="float-right relative flex items-center translate-y-[6px] pl-[10px] h-[21px] gap-[3px]">
                                         <span className="inline-block text-[11.5px] text-[#45af54]">12:24</span>
@@ -108,7 +108,7 @@ export default function ChatBox({
                             </div>
                         ) : (
                             <div key={index} className="flex justify-start px-4 my-2">
-                                <div className="shadow-[0px_1px_2px_#72727240] max-w-[90%] bg-[#ffffff] text-[14.5px] pt-[6px] pb-[6px] px-[10px] text-[#101010] relative rounded-r-[14px] rounded-tl-[16px] font-light">
+                                <div className="shadow-[0px_1px_2px_#72727240] max-w-[90%] lg:max-w-[80%] bg-[#ffffff] text-[14.5px] pt-[6px] pb-[6px] px-[10px] text-[#101010] relative rounded-r-[14px] rounded-tl-[16px] font-light">
                                     {data?.text}
                                     <span className="float-right text-[11.5px] text-[#9C9EA2] pl-[10px] h-[21px] translate-y-[6px]">12:24</span>
                                     <BubbleLeftAppendix />
