@@ -136,7 +136,7 @@ export default function ChatsSideNavigation() {
                 chatMessages?.length !== 0 && (
                     <div className="flex-1 flex flex-col pb-2 gap-[4px] overflow-y-auto pl-[10px] pr-[10px]">
                         {
-                            chatMessages?.map((data) => {
+                            chatMessages?.map((data, index) => {
 
                                 let participant = data.participants.find(data => typeof data !== "string" && data._id !== user?._id);
                                 if (!participant) {
@@ -149,15 +149,20 @@ export default function ChatsSideNavigation() {
 
                                 const isCurrentUser = (user?._id === message.from) || (user?._id === (message.from as UserType)._id);
 
+                                const isTopItem = index === 0;
+
                                 return (
                                     <Link
                                         href={'/messages/' + data._id}
                                         key={data._id}
-                                        className={cn("group relative p-[6px] flex gap-[8px] items-center rounded-[8px]", isChatActive ? "bg-primary" : "hover:bg-[#f4f4f5]")}
+                                        className={cn("group relative p-[6px] flex gap-[8px] items-center rounded-[8px] z-[1] bg-white z-[2]",
+                                            isChatActive ? "bg-primary" : "hover:bg-[#f4f4f5]",
+                                            isTopItem && "animate-slide-up"
+                                        )}
                                     >
                                         <figure>
                                             <div className="text-center text-[14.5px] tracking-[1px] leading-[56px] h-[56px] w-[56px] rounded-full bg-primary-alt text-white">
-                                                {(participant as IUser)?.firstName[0] + "" + (participant as IUser)?.lastName[0]} 
+                                                {(participant as IUser)?.firstName[0] + "" + (participant as IUser)?.lastName[0]}
                                             </div>
                                         </figure>
                                         <div>

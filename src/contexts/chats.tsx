@@ -51,8 +51,10 @@ const chatsReducer = (state: ChatsType, action: ChatsAction): ChatsType => {
                 messages: [...updatedChats[chatIndex].messages, action.payload.message]
             };
 
-            // Replace the old chat with the updated one
-            updatedChats[chatIndex] = updatedChat;
+            updatedChats.splice(chatIndex, 1);
+
+            // Add the updated chat to the beginning of the array
+            updatedChats.unshift(updatedChat);
 
             return {
                 ...state,
@@ -71,18 +73,12 @@ const chatsReducer = (state: ChatsType, action: ChatsAction): ChatsType => {
             const updatedChats = [...state.chats];
 
             // Create a new chat object with the updated properties
-            const updatedChat = {
+            updatedChats[chatToUpdateIndex] = {
                 ...updatedChats[chatToUpdateIndex],
                 messages: updatedChats[chatToUpdateIndex].messages.map((msg) =>
                     msg._id === action.payload.message._id ? action.payload.message : msg
                 ),
             };
-
-            // Remove the chat from its current position
-            updatedChats.splice(chatToUpdateIndex, 1);
-
-            // Add the updated chat to the beginning of the array
-            updatedChats.unshift(updatedChat);
 
             return {
                 ...state,
