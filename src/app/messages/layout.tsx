@@ -1,5 +1,4 @@
 "use client"
-import NavigationBar from "@/components/core/navigation-bar";
 import { ChatsProvider } from "@/contexts/chats";
 import ChatsSideNavigation from "./chats-side-navigation";
 import { usePathname } from "next/navigation";
@@ -18,17 +17,16 @@ export default function Layout({
 
     const isChatSidebarActive = pathname !== '/messages' && !isNotMobileScreen;
     const isMessageBoxActive = pathname === '/messages' && !isNotMobileScreen;
-    console.log(isMessageBoxActive)
 
     return (
         <ChatsProvider>
             <div className="h-screen">
-                <NavigationBar />
-                <div className="h-[calc(100vh_-_56px)] w-full flex">
+                {/* <NavigationBar /> */}
+                <div className="-not-needed-h-[calc(100vh_-_56px)] h-screen w-full flex">
                     {isChatSidebarActive ? null : <ChatsSideNavigation />}
                     {
                         isMessageBoxActive ? null : (
-                            <main className="bg-[#f2f4f7] px-[12px] py-[12px] flex-1">
+                            <main className="flex-1">
                                 {message}
                             </main>
                         )

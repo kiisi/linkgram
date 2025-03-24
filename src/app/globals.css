@@ -2,6 +2,9 @@
 @pluggin "tailwindcss-animate";
 
 @theme {
+
+  --font-intrument-sans: var(--font-intrument-sans);
+
   --color-primary: #633cff;
   --color-primary-alt: #806aff;
   --color-primary-light: #beadff;
@@ -53,7 +56,11 @@
 } */
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "sfProDisplay", system, -apple-system, system-ui BlinkMacSystemFont "Segoe UI" "Helvetica Neue" Helvetica Arial "Lucida Grande" Ubuntu Cantarell "Fira Sans" sans-serif;
+  font-feature-settings: "kern";
+  -webkit-font-feature-settings: "kern";
+  -moz-font-feature-settings: "kern";
+  -ms-font-feature-settings: "kern";
 }
 
 @layer utilities {

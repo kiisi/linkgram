@@ -1,12 +1,14 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { ActionResponse, loginAccount } from "../action";
 import { CheckCircle2, CircleAlert } from "lucide-react";
+import { BrandLogoWithLabel } from "@/components/common/brand-logo";
+import { cn } from "@/lib/utils";
+import { instrumentSans } from "@/fonts";
 
 const initialState: ActionResponse = {
     success: null,
@@ -27,18 +29,10 @@ export default function Page() {
     }, [state?.success, router]);
 
     return (
-        <main className="min-h-screen bg-whitesmoke grid place-items-center py-10">
+        <main className={cn("min-h-screen bg-whitesmoke grid place-items-center py-10", instrumentSans.className)}>
             <div className="w-full max-w-[560px]">
                 <header className="grid place-items-center mb-[50px]">
-                    <figure className="flex items-center gap-2">
-                        <Image
-                            src="/logo.svg"
-                            alt="Logo"
-                            width={40}
-                            height={40}
-                        />
-                        <figcaption className="text-[28px] font-bold tracking-[1px]">Linkgram</figcaption>
-                    </figure>
+                    <BrandLogoWithLabel />
                 </header>
                 <div className="bg-white rounded-[12px] p-[32px] md:p-[40px]">
                     <div className="mb-[40px]">

@@ -1,6 +1,8 @@
 
-import Message from "./message"
+import dynamic from "next/dynamic"
 import Image from "next/image"
+
+const Message = dynamic(()=>import("./message"))
 
 export default async function Page({
     params,

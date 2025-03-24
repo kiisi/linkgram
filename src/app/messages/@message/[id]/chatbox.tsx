@@ -98,14 +98,14 @@ export default function ChatBox({
                     chatMessages.map((data, index) => (
                         (userId === data.from) || (userId === (data.from as UserType)?._id) ? (
                             <div key={index} className="flex justify-end px-4 my-2">
-                                <div className="max-w-[90%] bg-[#EEFFDE] text-[15.5px] pt-[6px] pb-[6px] px-[10px] relative rounded-l-[14px] rounded-tr-[16px]">
+                                <div className="shadow-[0px_1px_2px_#72727240] max-w-[90%] bg-[#EEFFDE] text-[14.5px] py-[6px] px-[10px] relative rounded-l-[14px] rounded-tr-[16px] font-light">
                                     {data?.text}
-                                    <span className="float-right relative flex items-center translate-y-[8px] pl-[10px] h-[21px] gap-[3px]">
-                                        <span className="inline-block text-[12px] text-[#45af54]">12:24</span>
+                                    <span className="float-right relative flex items-center translate-y-[6px] pl-[10px] h-[21px] gap-[3px]">
+                                        <span className="inline-block text-[11.5px] text-[#45af54]">12:24</span>
                                         <span className="inline-block">
-                                            {data.status === "seen" && <CheckCheckIcon className="text-[#45af54] size-[18px]" />}
-                                            {data.status === "sent" && <CheckIcon className="text-[#45af54] size-[18px]" />}
-                                            {data.status === "sending" && <Clock8Icon className="text-[#45af54] size-[18px]" />}
+                                            {data.status === "seen" && <CheckCheckIcon className="text-[#45af54] size-[14px]" />}
+                                            {data.status === "sent" && <CheckIcon className="text-[#45af54] size-[14px]" />}
+                                            {data.status === "sending" && <Clock8Icon className="text-[#45af54] size-[14px]" />}
                                         </span>
                                     </span>
                                     <BubbleRightAppendix />
@@ -113,9 +113,9 @@ export default function ChatBox({
                             </div>
                         ) : (
                             <div key={index} className="flex justify-start px-4 my-2">
-                                <div className="max-w-[90%] bg-[#ffffff] text-[15.5px] pt-[6px] pb-[6px] px-[10px] text-[#101010] relative rounded-r-[14px] rounded-tl-[16px]">
+                                <div className="shadow-[0px_1px_2px_#72727240] max-w-[90%] bg-[#ffffff] text-[14.5px] pt-[6px] pb-[6px] px-[10px] text-[#101010] relative rounded-r-[14px] rounded-tl-[16px] font-light">
                                     {data?.text}
-                                    <span className="float-right text-[12.5px] text-[#9C9EA2] pl-[10px] h-[21px] translate-y-[8px]">12:24</span>
+                                    <span className="float-right text-[11.5px] text-[#9C9EA2] pl-[10px] h-[21px] translate-y-[6px]">12:24</span>
                                     <BubbleLeftAppendix />
                                 </div>
                             </div>
@@ -123,7 +123,7 @@ export default function ChatBox({
                     ))
                 }
             </div>
-            <form action={formAction} className="p-[8px] flex items-center gap-[4px]">
+            <form action={formAction} className="shadow-sm p-[8px] flex items-center gap-[4px]">
                 <button type="submit" className="cursor-pointer shrink-0 self-end w-[36px] h-[36px] rounded-full grid place-items-center transition group hover:bg-[#F2F2F2]">
                     <LinkIcon className="text-primary h-[20px] w-[20px]" />
                 </button>

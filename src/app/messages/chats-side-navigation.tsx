@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import { CheckCircle2Icon, CircleAlertIcon, MessageCircleIcon, MessageCirclePlus, SearchIcon } from "lucide-react";
-import { cn, getRelativeTime } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useChatsContext } from "@/contexts/chats";
 import { IUser } from "@/lib/models/user";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,7 @@ export default function ChatsSideNavigation() {
 
 
     return (
-        <div className={cn("relative flex flex-col", "w-full", "w-full sm:max-w-[300px] lg:max-w-[360px]")}>
+        <div className={cn("relative flex flex-col", "w-full sm:max-w-[320px] lg:max-w-[360px]")}>
             <header className="pt-3 pb-4 px-[16px]">
                 <div className="flex justify-between items-center mb-3">
                     <h1 className="text-[24px] font-bold">Chats</h1>
@@ -161,11 +161,11 @@ export default function ChatsSideNavigation() {
                                             </div>
                                         </figure>
                                         <div>
-                                            <h2 className={cn("text-[14.5px] break-all line-clamp-1 font-medium", isChatActive ? "text-white" : "text-[#65686c]")}>
+                                            <h2 className={cn("text-[16px] break-all font-normal line-clamp-1", isChatActive ? "text-white" : "text-black")}>
                                                 {(participant as IUser)?.firstName + " " + (participant as IUser)?.lastName}
                                             </h2>
-                                            <p className={cn("text-[13.5px] break-all line-clamp-1", isChatActive ? "text-white" : "text-[#65686c]")}>
-                                                {isCurrentUser && "You: "} {message?.text} • {getRelativeTime(message?.updatedAt ?? '') }
+                                            <p className={cn("text-[13.5px] font-light break-all line-clamp-1", isChatActive ? "text-white" : "text-[#3B4A54]")}>
+                                                {isCurrentUser && "You: "} {message?.text}
                                             </p>
                                         </div>
                                         <div className="cursor-pointer hidden group-hover:grid absolute right-[8px] shadow-md top-[50%] translate-y-[-50%] h-[32px] w-[32px] bg-white place-items-center rounded-full">

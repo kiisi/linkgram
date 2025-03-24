@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/lib/react-query";
 import { UserProvider } from "@/contexts/user";
 import { Toaster } from "react-hot-toast";
-
-const instrumentSans = Instrument_Sans({
-  weight: ["400", "500", "600", "700"],
-  subsets: ['latin'],
-})
+import { sfProText } from "../fonts";
 
 export const metadata: Metadata = {
   title: "Linkgram",
@@ -23,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${instrumentSans.className} antialiased`}
+        className={`${sfProText.className} antialiased`}
       >
         <ReactQueryProvider>
           <UserProvider>
