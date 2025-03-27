@@ -18,9 +18,9 @@ const ChatsContext = createContext<ChatsContextType | undefined>(undefined);
 
 type ChatsAction =
     | { type: 'SET_CHATS'; payload: OneToOneMessageType[] }
-    | { type: 'ADD_CHAT'; payload: { chatId: string; message: MessageType } }
-    | { type: 'UPDATE_CHAT'; payload: { chatId: string; message: MessageType } }
-    | { type: 'DELETE_CHAT'; payload: string }
+    | { type: 'ADD_CHAT_MESSAGE'; payload: { chatId: string; message: MessageType } }
+    | { type: 'UPDATE_CHAT_MESSAGE'; payload: { chatId: string; message: MessageType } }
+    | { type: 'DELETE_CHAT_MESSAGE'; payload: string }
 
 const initialState: ChatsType = {
     chats: [],
@@ -33,7 +33,8 @@ const chatsReducer = (state: ChatsType, action: ChatsAction): ChatsType => {
                 ...state,
                 chats: action.payload,
             };
-        case 'ADD_CHAT': {
+        case 'ADD_CHAT_MESSAGE': {
+            console.log("ADD_CHAT_MESSAGE Running.....")
 
             const chatIndex = state.chats.findIndex(data => data._id === action.payload.chatId);
 
@@ -61,7 +62,7 @@ const chatsReducer = (state: ChatsType, action: ChatsAction): ChatsType => {
                 chats: updatedChats,
             };
         }
-        case 'UPDATE_CHAT': {
+        case 'UPDATE_CHAT_MESSAGE': {
             const chatToUpdateIndex = state.chats.findIndex(chat => chat._id === action.payload.chatId);
 
             // If chat doesn't exist, return unchanged state

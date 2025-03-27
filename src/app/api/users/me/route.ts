@@ -27,6 +27,17 @@ export async function GET(request: NextRequest) {
 
         const user = await UserModel.findById(data?._id);
 
+        if(!user) {
+            return new Response(JSON.stringify({
+                success: false,
+                message: 'Not authenticated!',
+                data: null,
+            }), {
+                status: 400,
+                headers: { 'Content-Type': 'application/json' }
+            }); 
+        }
+
         return new Response(JSON.stringify({
             success: true,
             message: 'Authentication successful!',

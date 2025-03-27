@@ -33,3 +33,8 @@ export interface MessageType {
     updatedAt?: string;
     createdAt?: string;
 }
+
+export interface MessageTypePusherResponse {
+    chatId: string;
+    data: MessageType;
+}

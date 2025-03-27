@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useUserContext } from "@/contexts/user";
 import { usePathname } from "next/navigation";
 import { UserType } from "@/@types";
+import { SettingsIcon } from "@/components/common/svgs";
 
 type Tabs = "INBOX" | "MESSAGE_REQUESTS" | "ARCHIVED_CHATS";
 
@@ -30,7 +31,8 @@ export default function ChatsSideNavigation() {
     const pathname = usePathname()
 
     const { user } = useUserContext()
-    const { chats: chatMessages } = useChatsContext()
+    
+    const { chats: chatsMessages } = useChatsContext()
 
     const [state, formAction, isPending] = useActionState(createNewChat, initialState)
 
@@ -50,15 +52,21 @@ export default function ChatsSideNavigation() {
         }
     }, [state?.success]);
 
+    console.log(chatsMessages);
 
     return (
         <div className={cn("relative flex flex-col", "w-full sm:max-w-[320px] lg:max-w-[360px]")}>
             <header className="pt-3 pb-4 px-[16px]">
                 <div className="flex justify-between items-center mb-3">
                     <h1 className="text-[24px] font-bold">Chats</h1>
-                    <button onClick={() => setIsNewChatDialogOpen(true)} className="grid place-items-center cursor-pointer h-[36px] w-[36px] rounded-full bg-[#F6F6F7] hover:bg-[#E4E4E9]">
-                        <MessageCirclePlus className="h-5 w-5 text-[#3C3C43]" />
-                    </button>
+                    <div className="flex gap-2 items-center">
+                        <button onClick={() => setIsNewChatDialogOpen(true)} className="grid place-items-center cursor-pointer h-[36px] w-[36px] rounded-full bg-[#F6F6F7] hover:bg-[#E4E4E9]">
+                            <MessageCirclePlus className="h-5 w-5 text-[#3C3C43]" />
+                        </button>
+                        <button className="grid place-items-center cursor-pointer h-[36px] w-[36px] rounded-full bg-[#F6F6F7] hover:bg-[#E4E4E9]">
+                            <SettingsIcon className="h-5 w-5 text-[#3C3C43]" />
+                        </button>
+                    </div>
                 </div>
                 <div className="mb-3 flex items-center gap-[2.5px]">
                     {
@@ -133,10 +141,10 @@ export default function ChatsSideNavigation() {
                 )
             }
             {
-                chatMessages?.length !== 0 && (
+                chatsMessages?.length !== 0 && (
                     <div className="flex-1 flex flex-col pb-2 gap-[4px] overflow-y-auto pl-[10px] pr-[10px]">
                         {
-                            chatMessages?.map((data, index) => {
+                            chatsMessages?.map((data, index) => {
 
                                 let participant = data.participants.find(data => typeof data !== "string" && data._id !== user?._id);
                                 if (!participant) {
@@ -184,7 +192,7 @@ export default function ChatsSideNavigation() {
                 )
             }
             {
-                chatMessages?.length === 0 && (
+                chatsMessages?.length === 0 && (
                     <div className="w-full flex-1 text-center grid place-items-center">
                         <figure className="grid place-items-center">
                             <Image

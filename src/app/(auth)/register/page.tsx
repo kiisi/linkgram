@@ -31,7 +31,7 @@ export default function Page() {
     }, [state?.success, router]);
 
     return (
-        <main className={cn("min-h-screen bg-white md:bg-whitesmoke grid place-items-center py-10", instrumentSans.className)}>
+        <div className={cn("min-h-screen bg-white md:bg-whitesmoke grid place-items-center py-10", instrumentSans.className)}>
             <div className="w-full max-w-[560px]">
                 <header className="grid pl-[32px] md:pl-0 md:place-items-center mb-[50px]">
                     <BrandLogoWithLabel />
@@ -160,6 +160,6 @@ export default function Page() {
                     </form>
                 </div>
             </div>
-        </main>
+        </div>
     )
 }

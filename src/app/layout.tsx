@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ReactQueryProvider from "@/lib/react-query";
-import { UserProvider } from "@/contexts/user";
 import { Toaster } from "react-hot-toast";
 import { sfProText } from "../fonts";
+import ProviderWrapper from "./provider-wrapper";
 
 export const metadata: Metadata = {
   title: "Linkgram",
@@ -14,14 +14,15 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>){
+
   return (
     <html lang="en">
       <body
         className={`${sfProText.className} antialiased`}
       >
         <ReactQueryProvider>
-          <UserProvider>
+          <ProviderWrapper>
             {children}
             <Toaster
               position="top-center"
@@ -30,7 +31,7 @@ export default function RootLayout({
                 duration: 12500,
               }}
             />
-          </UserProvider>
+          </ProviderWrapper>
         </ReactQueryProvider>
       </body>
     </html>

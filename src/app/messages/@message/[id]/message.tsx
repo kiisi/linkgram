@@ -3,14 +3,8 @@ import { MessageType, UserType } from "@/@types"
 import { useChatsContext } from "@/contexts/chats"
 import { useUserContext } from "@/contexts/user"
 import { Phone, Video } from "lucide-react"
-import { useEffect } from "react"
-import Pusher from 'pusher-js';
 import ChatBox from "./chatbox"
 import { useRouter } from "next/navigation"
-
-const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
-    cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER!,
-});
 
 
 export default function Message({ id }: { id: string }) {
@@ -19,7 +13,7 @@ export default function Message({ id }: { id: string }) {
 
     const { user } = useUserContext()
 
-    const { chats, dispatch } = useChatsContext()
+    const { chats } = useChatsContext()
 
     const chat = chats.find(data => data._id === id);
 
@@ -27,48 +21,16 @@ export default function Message({ id }: { id: string }) {
 
     const participant = (chat?.participants.find(data => typeof data !== "string" && data._id !== user?._id)) || chat?.participants[0];
 
+    const newMessageEvent = "new-message-event"
+    
     async function sendMessage(data: MessageType) {
         const payload: MessageType = {
             ...data,
             chatId: chat?._id,
         }
 
-        await deliverMessage(payload);
+        await deliverMessage(payload, id, newMessageEvent);
     }
-
-    useEffect(() => {
-
-        const channel = pusher.subscribe("chat-room");
-
-        channel.bind("new-message-event", (data: MessageType) => {
-
-            console.log("Success Data ===>", data)
-            
-            if (user?._id === (data.from as UserType)?._id) {
-                dispatch({ 
-                    type: "UPDATE_CHAT", 
-                    payload: {
-                        chatId: id,
-                        message: data,
-                    }
-                })
-            }
-            else {
-                dispatch({ 
-                    type: "ADD_CHAT", 
-                    payload: {
-                        chatId: id,
-                        message: data,
-                    }
-                })
-            }
-        });
-
-        return () => {
-            channel.unbind_all();
-            channel.unsubscribe();
-        };
-    }, [chatMessages.length]);
 
     const backNavigationHandler = () => {
         router.push('/messages');
@@ -115,13 +77,14 @@ export default function Message({ id }: { id: string }) {
     )
 }
 
-async function deliverMessage(message: MessageType) {
-    console.log("SEND MESSAGE", message)
+async function deliverMessage(message: MessageType, channel: string, event: string) {
 
     const response = await fetch("/api/messages/message", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+            channel,
+            event,
             data: message,
         }),
     });

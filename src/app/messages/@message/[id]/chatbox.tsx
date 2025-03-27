@@ -39,7 +39,7 @@ export default function ChatBox({
         }
 
         dispatch({
-            type: "ADD_CHAT",
+            type: "ADD_CHAT_MESSAGE",
             payload: {
                 chatId: chatId,
                 message: payload,
