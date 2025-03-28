@@ -164,7 +164,9 @@ export default function ChatsSideNavigation() {
 
                                 const isTopItem = index === 0;
 
-                                console.log(chatRef?.current?.getBoundingClientRect()?.top === 226.5)
+                                const topItemPositionValid = !!(chatRef?.current?.getBoundingClientRect()?.top) && chatRef?.current?.getBoundingClientRect()?.top !== 158.5
+
+                                console.log(topItemPositionValid)
 
                                 return (
                                     <Link
@@ -173,7 +175,7 @@ export default function ChatsSideNavigation() {
                                         ref={chatRef}
                                         className={cn("group relative p-[6px] flex gap-[8px] items-center rounded-[8px] z-[1] bg-white z-[2]",
                                             isChatActive ? "bg-primary" : "hover:bg-[#f4f4f5]",
-                                            chatRef?.current?.getBoundingClientRect()?.top === 226.5 && isTopItem && "animate-slide-up"
+                                            topItemPositionValid && isTopItem && "animate-slide-up"
                                         )}
                                     >
                                         <figure>
