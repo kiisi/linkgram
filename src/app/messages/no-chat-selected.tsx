@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function NoChatSelected() {
     return (
-        <main className="bg-[#f2f4f7] px-[12px] py-[12px] h-full">
+        <main className="bg-[#f2f4f7] p-[8px] h-full">
             <div className="h-full w-full bg-white rounded-[8px] grid place-items-center">
                 <figure className="grid place-items-center text-center">
                     <Image

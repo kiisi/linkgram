@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import Link from "next/link";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { createNewChat, CreateNewChatActionResponse } from "./action";
 import { FreeMode } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -34,6 +34,8 @@ export default function ChatsSideNavigation() {
     
     const { chats: chatsMessages } = useChatsContext()
 
+    const chatRef = useRef<HTMLAnchorElement | null>(null);
+
     const [state, formAction, isPending] = useActionState(createNewChat, initialState)
 
     const [tab, setTab] = useState<Tabs>("INBOX");
@@ -52,7 +54,10 @@ export default function ChatsSideNavigation() {
         }
     }, [state?.success]);
 
-    console.log(chatsMessages);
+    useEffect(() => {
+        console.log(chatRef?.current?.getBoundingClientRect())
+    }, [chatsMessages])
+
 
     return (
         <div className={cn("relative flex flex-col", "w-full sm:max-w-[320px] lg:max-w-[360px]")}>
@@ -159,13 +164,16 @@ export default function ChatsSideNavigation() {
 
                                 const isTopItem = index === 0;
 
+                                console.log(chatRef?.current?.getBoundingClientRect()?.top === 226.5)
+
                                 return (
                                     <Link
                                         href={'/messages/' + data._id}
                                         key={data._id}
+                                        ref={chatRef}
                                         className={cn("group relative p-[6px] flex gap-[8px] items-center rounded-[8px] z-[1] bg-white z-[2]",
                                             isChatActive ? "bg-primary" : "hover:bg-[#f4f4f5]",
-                                            isTopItem && "animate-slide-up"
+                                            chatRef?.current?.getBoundingClientRect()?.top === 226.5 && isTopItem && "animate-slide-up"
                                         )}
                                     >
                                         <figure>

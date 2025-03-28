@@ -78,7 +78,7 @@ export default function Layout({
 
     return (
         <div className="h-screen">
-            <div className="-not-needed-h-[calc(100vh_-_56px)] h-screen w-full flex">
+            <div className="h-screen w-full flex">
                 {isChatSidebarActive ? null : <ChatsSideNavigation />}
                 {
                     isMessageBoxActive ? null : (
