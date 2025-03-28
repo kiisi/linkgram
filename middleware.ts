@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
         if (!token) {
             const url = request.nextUrl.clone();
             url.pathname = "/login";
-            return NextResponse.redirect(new URL(url));
+            return NextResponse.redirect(new URL(url), 307);
         }
 
         const apiResponse = await fetch(new URL(`${process.env.NEXT_PUBLIC_API_BASE}/api/users/me`), {
@@ -28,13 +28,13 @@ export async function middleware(request: NextRequest) {
 
         const url = request.nextUrl.clone();
         url.pathname = "/login";
-        return NextResponse.redirect(new URL(url));
+        return NextResponse.redirect(new URL(url), 307);
     }
     catch (error) {
         console.log(error)
         const url = request.nextUrl.clone();
         url.pathname = "/login";
-        return NextResponse.redirect(new URL(url));
+        return NextResponse.redirect(new URL(url), 307);
     }
 }
 
