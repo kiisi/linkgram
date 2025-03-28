@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
     console.log("Middleware running...")
+    console.log(request.nextUrl)
 
     try {
         const token = request.cookies.get('token');
@@ -9,7 +10,7 @@ export async function middleware(request: NextRequest) {
         if (!token) {
             const url = request.nextUrl.clone();
             url.pathname = "/login";
-            return NextResponse.redirect(url);
+            return NextResponse.redirect(new URL(url));
         }
 
         const apiResponse = await fetch(new URL(`${process.env.NEXT_PUBLIC_API_BASE}/api/users/me`), {
@@ -27,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
         const url = request.nextUrl.clone();
         url.pathname = "/login";
-        return NextResponse.redirect(url);
+        return NextResponse.redirect(new URL(url));
     }
     catch (error) {
         console.log(error)
