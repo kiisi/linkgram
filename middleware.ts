@@ -6,7 +6,11 @@ export async function middleware(request: NextRequest) {
     try {
         const token = request.cookies.get('token');
 
-        if (!token) return redirectToLogin(request);
+        if (!token) {
+            const url = request.nextUrl.clone();
+            url.pathname = "/login";
+            return NextResponse.redirect(url);
+        }
 
         const apiResponse = await fetch(new URL(`${process.env.NEXT_PUBLIC_API_BASE}/api/users/me`), {
             method: "GET",
@@ -21,11 +25,15 @@ export async function middleware(request: NextRequest) {
 
         if (data.success) return NextResponse.next();
 
-        return redirectToLogin(request);
+        const url = request.nextUrl.clone();
+        url.pathname = "/login";
+        return NextResponse.redirect(url);
     }
     catch (error) {
         console.log(error)
-        return redirectToLogin(request);
+        const url = request.nextUrl.clone();
+        url.pathname = "/login";
+        return NextResponse.redirect(url);
     }
 }
 
@@ -40,13 +48,4 @@ export const config = {
          */
         '/((?!_next/static|_next/image|favicon.ico|api|register|login|friends|$|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
     ],
-}
-
-function redirectToLogin(request: NextRequest) {
-    const url = request.nextUrl.clone();
-    if (!url.pathname.startsWith("/login") && !url.pathname.startsWith("/create-account")) {
-        url.pathname = "/login";
-        return NextResponse.redirect(url);
-    }
-    return NextResponse.next();
 }
