@@ -34,7 +34,9 @@ export default function ChatsSideNavigation() {
     
     const { chats: chatsMessages } = useChatsContext()
 
-    const chatRef = useRef<HTMLAnchorElement | null>(null);
+    const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
+    const chatRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
 
     const [state, formAction, isPending] = useActionState(createNewChat, initialState)
 
@@ -53,11 +55,6 @@ export default function ChatsSideNavigation() {
             setIsNewChatDialogOpen(false);
         }
     }, [state?.success]);
-
-    useEffect(() => {
-        console.log(chatRef?.current?.getBoundingClientRect())
-    }, [chatsMessages])
-
 
     return (
         <div className={cn("relative flex flex-col", "w-full sm:max-w-[320px] lg:max-w-[360px]")}>
@@ -147,7 +144,7 @@ export default function ChatsSideNavigation() {
             }
             {
                 chatsMessages?.length !== 0 && (
-                    <div className="flex-1 flex flex-col pb-2 gap-[4px] overflow-y-auto pl-[10px] pr-[10px]">
+                    <div ref={chatContainerRef} className="flex-1 flex flex-col pb-2 gap-[4px] overflow-y-auto pl-[10px] pr-[10px]">
                         {
                             chatsMessages?.map((data, index) => {
 
@@ -164,9 +161,17 @@ export default function ChatsSideNavigation() {
 
                                 const isTopItem = index === 0;
 
-                                const topItemPositionValid = !!(chatRef?.current?.getBoundingClientRect()?.top) && chatRef?.current?.getBoundingClientRect()?.top !== 158.5
+                                const chatRef = (el: HTMLAnchorElement | null) => {
+                                    if (chatRefs?.current) {
+                                        chatRefs.current[data._id] = el;
+                                    }
+                                };
+                                
+                                const containerRefTop = chatContainerRef?.current?.getBoundingClientRect()?.top;
 
-                                console.log(topItemPositionValid)
+                                const chatRefsTop = chatRefs?.current[data._id]?.getBoundingClientRect()?.top
+
+                                const isChatValidToSlideUp = (containerRefTop !== chatRefsTop) && isTopItem;
 
                                 return (
                                     <Link
@@ -175,7 +180,7 @@ export default function ChatsSideNavigation() {
                                         ref={chatRef}
                                         className={cn("group relative p-[6px] flex gap-[8px] items-center rounded-[8px] z-[1] bg-white z-[2]",
                                             isChatActive ? "bg-primary" : "hover:bg-[#f4f4f5]",
-                                            topItemPositionValid && isTopItem && "animate-slide-up"
+                                            isChatValidToSlideUp && "animate-slide-up"
                                         )}
                                     >
                                         <figure>
