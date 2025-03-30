@@ -20,9 +20,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
 
-    if (!user?._id) return;
+    pusher.connection.bind('connected', (callback: unknown) => {
+      console.log("Connected ==>", callback);
+    });
 
-    const userId = `user-${user?._id}`
+    const userId = `user-${user?._id}`;
 
     const userChannel = pusher.subscribe(userId);
 
