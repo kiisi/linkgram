@@ -2,7 +2,6 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
     console.log("Middleware running...")
-    console.log(request.nextUrl)
 
     try {
         const token = request.cookies.get('token');

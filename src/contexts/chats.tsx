@@ -4,6 +4,7 @@ import axios from 'axios';
 import { MessagesResponseType, MessageType, OneToOneMessageType } from '@/@types';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export interface ChatsType {
     chats: OneToOneMessageType[];
@@ -98,6 +99,12 @@ const chatsReducer = (state: ChatsType, action: ChatsAction): ChatsType => {
 
 const ChatsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
+    const pathname = usePathname();
+
+    const publicRoutes = ['/login', '/', '/register', '/friends'];
+
+    const isPublicRoute = publicRoutes.some((item) => pathname === item);
+
     const [state, dispatch] = useReducer(chatsReducer, initialState);
 
     const { data, isLoading } = useQuery<MessagesResponseType>({
@@ -106,6 +113,7 @@ const ChatsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             const response = await axios.get<MessagesResponseType>("/api/messages");
             return response.data;
         },
+        enabled: !isPublicRoute,
     });
 
     useEffect(() => {

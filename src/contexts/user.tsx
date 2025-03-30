@@ -3,6 +3,7 @@ import React, { createContext, useReducer, ReactNode, useContext, useEffect, use
 import Image from 'next/image';
 import { getToken } from '@/lib';
 import { UserType } from '@/@types';
+import { usePathname } from 'next/navigation';
 
 export interface UserContextType {
     user: UserType | null;
@@ -32,15 +33,22 @@ const userReducer = (state: UserType | null, action: Action): UserType | null =>
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// type AuthStatusType = "PENDING" | "AUTHENTICATED" | "UNAUTHENTICATED"
-
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
+    const pathname = usePathname();
+
+    const publicRoutes = ['/login', '/', '/register', '/friends'];
+
+    const isPublicRoute = publicRoutes.some((item) => pathname === item);
+
     // Initialize useReducer with the reducer function and initial state
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(!isPublicRoute);
     const [user, dispatch] = useReducer(userReducer, initialState);
 
     useEffect(() => {
+
+        if (isPublicRoute) return;
+
         const fetchUser = async () => {
             try {
                 const token = await getToken();
@@ -68,36 +76,14 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         };
 
         fetchUser();
-    }, [isLoading]);
+    }, [isPublicRoute]);
 
     // Define the setUser function to dispatch actions
     const setUser = (user: UserType | null) => {
         dispatch({ type: 'SET_USER', payload: user });
     };
 
-    // switch (authStatusType) {
-    //     case "PENDING":
-    //         return (
-    //             <div className='grid place-items-center w-screen h-screen'>
-    //                 <Image
-    //                     src="/logo.svg"
-    //                     alt="Linkgram logo"
-    //                     width={40}
-    //                     height={40}
-    //                 />
-    //             </div>
-    //         );
-    //     case "AUTHENTICATED":
-    //         return (
-    //             <UserContext.Provider value={{ user, setUser }}>
-    //                 {children}
-    //             </UserContext.Provider>
-    //         )
-    //     default:
-    //         break;
-    // }
-
-    if (isLoading) {
+    if (isLoading && !isPublicRoute) {
         return (
             <div className='grid place-items-center w-screen h-screen'>
                 <Image
