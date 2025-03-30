@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
             const userId = user.toString();
             const userChannel = `user-${userId}`;
 
-            await pusher.trigger(userChannel, "listen", {
+            await pusher.trigger(userChannel, userChannel, {
                 chatId: conversation._id,
                 data,
             });

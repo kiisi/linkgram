@@ -22,10 +22,11 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
     if (!user?._id) return;
 
-    const userChannel = pusher.subscribe(`user-${user?._id}`);
-    console.log(`user-${user?._id}`)
+    const userId = `user-${user?._id}`
 
-    userChannel.bind("listen", (payload: MessageTypePusherResponse) => {
+    const userChannel = pusher.subscribe(userId);
+
+    userChannel.bind(userId, (payload: MessageTypePusherResponse) => {
       console.log("Listening", payload);
 
       const chatId = payload.chatId;
