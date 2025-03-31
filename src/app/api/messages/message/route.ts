@@ -56,15 +56,19 @@ export async function POST(request: NextRequest) {
         .exec();
 
         const data = conversation?.messages.find((item) => item._id.toString() === refinedData._id);
+        console.log("Data =>", data);
 
-        conversation?.participants.forEach(async (user) => {
-            const userId = user.toString();
-            const userChannel = `user__${userId}`;
+        const userFromChannel = `user__${refinedData.from}`;
+        const userToChannel = `user__${refinedData.to}`;
 
-            await pusher.trigger(userChannel, userChannel, {
-                chatId: conversation._id,
-                data,
-            });
+        await pusher.trigger(userFromChannel, userFromChannel, {
+            chatId: conversation?._id,
+            data,
+        });
+
+        await pusher.trigger(userToChannel, userToChannel, {
+            chatId: conversation?._id,
+            data,
         });
 
         return new Response(JSON.stringify({
