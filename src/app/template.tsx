@@ -37,8 +37,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
     const userChannel = existingChannel || pusher.subscribe(userId);
 
     userChannel.bind(userId, (payload: MessageTypePusherResponse) => {
-      console.log("Listening", payload);
-
       const chatId = payload.chatId;
       const data = payload.data;
 

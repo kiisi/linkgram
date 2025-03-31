@@ -127,6 +127,7 @@ export default function ChatBox({
                         // value={message}
                         type="text"
                         name="message"
+                        required={true}
                         // onChange={(e) => setMessage(e.target.value)}
                         className="w-full outline-none" placeholder="Message"
                     />

@@ -56,7 +56,6 @@ export async function POST(request: NextRequest) {
         .exec();
 
         const data = conversation?.messages.find((item) => item._id.toString() === refinedData._id);
-        console.log("Data =>", data);
 
         const userFromChannel = `user__${refinedData.from}`;
         const userToChannel = `user__${refinedData.to}`;
