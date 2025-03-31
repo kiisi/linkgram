@@ -3,12 +3,14 @@ import { MessageTypePusherResponse, UserType } from "@/@types";
 import { useChatsContext } from "@/contexts/chats";
 import { useUserContext } from "@/contexts/user";
 import { pusher } from "@/lib/pusher";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
-export default function Template({ children }: { children: React.ReactNode }) {
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+export const revalidate = 1
 
-  const router = useRouter()
+export default function Template({ children }: { children: React.ReactNode }) {
 
   const params = useParams<{id: string}>();
 
@@ -22,13 +24,17 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
 
+    if (!user?._id) return; 
+
     pusher.connection.bind('connected', (callback: unknown) => {
       console.log("Connected ==>", callback);
     });
 
-    const userId = `user-${user?._id}`;
+    const userId = `user__${user?._id}`;
 
-    const userChannel = pusher.subscribe(userId);
+    // Check if already subscribed
+    const existingChannel = pusher.channel(userId);
+    const userChannel = existingChannel || pusher.subscribe(userId);
 
     userChannel.bind(userId, (payload: MessageTypePusherResponse) => {
       console.log("Listening", payload);
@@ -58,15 +64,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
       }
     });
 
-    setTimeout(() => {
-      router.refresh()
-    }, 250)
-
     return () => {
       userChannel.unbind_all();
-      userChannel.unsubscribe();
     };
   }, [user?._id, chats, chatMessages, dispatch]);
 
-  return <div className="Template">{children}</div>
+  return <div className="template">{children}</div>
 }

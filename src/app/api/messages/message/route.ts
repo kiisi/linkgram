@@ -4,6 +4,9 @@ import dbConnect from "@/lib/mongoose";
 import { NextRequest } from "next/server";
 import Pusher from "pusher";
 
+export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store'
+
 const pusher = new Pusher({
     appId: process.env.PUSHER_APP_ID!,
     key: process.env.PUSHER_APP_KEY!,
@@ -17,8 +20,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     const payload = body.data as MessageType;
-    const event = body.event as string;
-    const channel = body.channel as string;
 
     try {
         await dbConnect();
@@ -55,17 +56,19 @@ export async function POST(request: NextRequest) {
         .exec();
 
         const data = conversation?.messages.find((item) => item._id.toString() === refinedData._id);
+        console.log("Data =>", data);
 
-        await pusher.trigger(channel, event, data);
+        const userFromChannel = `user__${refinedData.from}`;
+        const userToChannel = `user__${refinedData.to}`;
 
-        conversation?.participants.forEach(async (user) => {
-            const userId = user.toString();
-            const userChannel = `user-${userId}`;
+        await pusher.trigger(userFromChannel, userFromChannel, {
+            chatId: conversation?._id,
+            data,
+        });
 
-            await pusher.trigger(userChannel, userChannel, {
-                chatId: conversation._id,
-                data,
-            });
+        await pusher.trigger(userToChannel, userToChannel, {
+            chatId: conversation?._id,
+            data,
         });
 
         return new Response(JSON.stringify({
