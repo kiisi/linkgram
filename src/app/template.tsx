@@ -3,10 +3,12 @@ import { MessageTypePusherResponse, UserType } from "@/@types";
 import { useChatsContext } from "@/contexts/chats";
 import { useUserContext } from "@/contexts/user";
 import { pusher } from "@/lib/pusher";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Template({ children }: { children: React.ReactNode }) {
+
+  const router = useRouter()
 
   const params = useParams<{id: string}>();
 
@@ -55,6 +57,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
         })
       }
     });
+
+    setTimeout(() => {
+      router.refresh()
+    }, 250)
 
     return () => {
       userChannel.unbind_all();
