@@ -63,7 +63,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
     });
 
     return () => {
-      // userChannel.unbind_all();
+      userChannel.unbind(userId);
     };
   }, [user?._id, chats, chatMessages, dispatch]);
 
