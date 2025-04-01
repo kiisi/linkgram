@@ -56,7 +56,7 @@ export const getRelativeTime = (timestamp: string | Date): string => {
   return `${diffYears}y`;
 };
 
-export const formatTime = (updatedAt: string) => {
-  const date = new Date(updatedAt);
+export const formatTime = (updatedAt?: string) => {
+  const date = updatedAt ? new Date(updatedAt) : new Date();
   return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 };
