@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useUserContext } from "@/contexts/user";
 import { usePathname } from "next/navigation";
 import { UserType } from "@/@types";
-import { SettingsIcon } from "@/components/common/svgs";
+import { DoubleTickIcon, SettingsIcon } from "@/components/common/svgs";
 
 type Tabs = "INBOX" | "MESSAGE_REQUESTS" | "ARCHIVED_CHATS";
 
@@ -193,7 +193,7 @@ export default function ChatsSideNavigation() {
                                                 {(participant as IUser)?.firstName + " " + (participant as IUser)?.lastName}
                                             </h2>
                                             <p className={cn("text-[13.5px] font-light break-all line-clamp-1", isChatActive ? "text-white" : "text-[#3B4A54]")}>
-                                                {isCurrentUser && "You: "} {message?.text}
+                                                {isCurrentUser && <DoubleTickIcon className="inline mt-[-4.5px]" />} {message?.text}
                                             </p>
                                         </div>
                                         <div className="cursor-pointer hidden group-hover:grid absolute right-[8px] shadow-md top-[50%] translate-y-[-50%] h-[32px] w-[32px] bg-white place-items-center rounded-full">

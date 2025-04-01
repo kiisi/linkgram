@@ -55,3 +55,8 @@ export const getRelativeTime = (timestamp: string | Date): string => {
   const diffYears = Math.floor(diffDays / 365);
   return `${diffYears}y`;
 };
+
+export const formatTime = (updatedAt: string) => {
+  const date = new Date(updatedAt);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+};

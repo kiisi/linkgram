@@ -21,7 +21,6 @@ export default function Message({ id }: { id: string }) {
 
     const participant = (chat?.participants.find(data => typeof data !== "string" && data._id !== user?._id)) || chat?.participants[0];
 
-    const newMessageEvent = "new-message-event"
     
     async function sendMessage(data: MessageType) {
         const payload: MessageType = {
@@ -29,7 +28,7 @@ export default function Message({ id }: { id: string }) {
             chatId: chat?._id,
         }
 
-        await deliverMessage(payload, id, newMessageEvent);
+        await deliverMessage(payload);
     }
 
     const backNavigationHandler = () => {
@@ -77,14 +76,12 @@ export default function Message({ id }: { id: string }) {
     )
 }
 
-async function deliverMessage(message: MessageType, channel: string, event: string) {
+async function deliverMessage(message: MessageType) {
 
     const response = await fetch("/api/messages/message", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            channel,
-            event,
             data: message,
         }),
     });
